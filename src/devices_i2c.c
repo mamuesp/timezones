@@ -144,8 +144,9 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 	return currDevice.timerId;
 }
 
-int test_lamp(int red, int yellow, int green, int delay, int addr, int mask, int oldDevice) {
-
+int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice) {
+	int delay = 500;
+	
 	static struct device_ctrl currDevice;
 
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();

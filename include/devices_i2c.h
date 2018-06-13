@@ -41,7 +41,7 @@ IRAM void device_cb(void *arg);
 
 int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice);
 
-int test_lamp(int red, int yellow, int green, int delay, int addr, int mask, int oldDevice);
+int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice);
 
 bool mgos_devices_i2c_init(void);
 
