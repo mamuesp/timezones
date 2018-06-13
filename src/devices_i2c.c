@@ -43,7 +43,6 @@ IRAM void handleSequence(struct device_ctrl *currDevice) {
 			currDevice->curr = 0;
 			_set_device_i2c(currDevice);
 		}
-		(void) arg;
 		return;
 	}
 	if (currDevice->addr == -1) {
