@@ -183,7 +183,7 @@ int test_lamp(int red, int yellow, int green, int delay, int addr, int mask, int
 		mgos_gpio_set_pull(green, MGOS_GPIO_PULL_DOWN);
 		mgos_gpio_write(green, 0);
  	} else {
-	 	_set_device_i2c(&currDevice, oldDevice);
+	 	_set_device_i2c(&currDevice);
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
 	return currDevice.timerId;
