@@ -7,14 +7,17 @@
  */
 void set_device_i2c(uint16_t addr, uint8_t pins, void *oldDevice) {
 	
-	struct device_ctrl *currDevice = (struct device_ctrl *) oldDevice;
+	struct device_ctrl *currDevice;
   static uint8_t currPins;
 	struct mgos_i2c *i2c;
 	
 	// if a timer is active, we stop it
-	if (currDevice->timerId != 0		) {
-		mgos_clear_timer(currDevice->timerId);
-	}
+	if (oldDevice != NULL) {
+ 		currDevice = (struct device_ctrl *) oldDevice;
+		if (currDevice->timerId != 0		) {
+			mgos_clear_timer(currDevice->timerId);
+		}
+ 	}
 
 	i2c = mgos_i2c_get_global();
   if (i2c == NULL) {
