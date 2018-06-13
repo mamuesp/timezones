@@ -121,15 +121,9 @@ void *blink_lamp(int pin, int delay, int addr, int mask) {
   currDevice.i2c = myI2C;
  
  	if (currDevice.addr == -1) {
-		mgos_gpio_set_mode(red, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(red, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(red, 0);
-		mgos_gpio_set_mode(yellow, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(yellow, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(yellow, 0);
-		mgos_gpio_set_mode(green, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(green, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(green, 0);
+		mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_OUTPUT);
+		mgos_gpio_set_pull(pin, MGOS_GPIO_PULL_DOWN);
+		mgos_gpio_write(pin, 0);
  	} else {
 	 	_set_device_i2c(&currDevice);
  	}
