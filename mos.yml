@@ -6,6 +6,9 @@ version: 1.0
 sources:
   - src
 
+includes:
+  - include
+
 tags:
   - c
   - demo
