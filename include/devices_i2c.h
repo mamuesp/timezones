@@ -28,7 +28,7 @@ struct device_ctrl {
 
 bool mgos_devices_i2c_init(void);
 
-void set_device_i2c(uint16_t addr, uint8_t pins);
+void set_device_i2c(uint16_t addr, uint8_t pins, void *oldDevice);
 void *test_lamp(int red, int yellow, int green, int delay, int addr, int mask);
 void *blink_lamp(int pins, int delay, int addr, int mask);
 
