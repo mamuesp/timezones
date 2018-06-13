@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include "devices_i2c.h"
 
-
 /*
  * Hardware timer functions
  * 
@@ -27,15 +26,15 @@ void set_device_i2c(uint16_t addr, uint8_t pins) {
   }
 }
 
-IRAM void _set_device_i2c(struct lamp_ctrl *currLamp) {
+IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
 
   static uint8_t currPins;
   static uint8_t pins;
   
-  if (currLamp->i2c != NULL) {
- 		if (mgos_i2c_read(currLamp->i2c, currLamp->addr, &currPins, 1, true)) {
-		 	pins = (currPins & 0xF8) | currLamp->seq[currLamp->curr];
-		  mgos_i2c_write(currLamp->i2c, currLamp->addr, &pins, 1, true);
+  if (currDevice->i2c != NULL) {
+ 		if (mgos_i2c_read(currDevice->i2c, currDevice->addr, &currPins, 1, true)) {
+		 	pins = (currPins & 0xF8) | currDevice->seq[currDevice->curr];
+		  mgos_i2c_write(currDevice->i2c, currDevice->addr, &pins, 1, true);
  		}
   }
   
@@ -43,62 +42,62 @@ IRAM void _set_device_i2c(struct lamp_ctrl *currLamp) {
 
 IRAM void device_cb(void *arg) {
 
-  struct lamp_ctrl *currLamp = (struct lamp_ctrl *) arg;;
+  struct device_ctrl *currDevice = (struct device_ctrl *) arg;;
   
-	if (currLamp->curr >= currLamp->steps) {
-		if (currLamp->addr == -1) {
-			mgos_gpio_write(currLamp->red, 0);
-			mgos_gpio_write(currLamp->yellow, 0);
-			mgos_gpio_write(currLamp->green, 0);
+	if (currDevice->curr >= currDevice->steps) {
+		if (currDevice->addr == -1) {
+			mgos_gpio_write(currDevice->red, 0);
+			mgos_gpio_write(currDevice->yellow, 0);
+			mgos_gpio_write(currDevice->green, 0);
 		} else {
-			currLamp->curr = 0;
-			_set_device_i2c(currLamp);
+			currDevice->curr = 0;
+			_set_device_i2c(currDevice);
 		}
 	 	(void) arg;
 		return;
 	}
 
-	if (currLamp->addr == -1) {
-		if (currLamp->curr > 0) {
-			mgos_gpio_write(currLamp->seq[currLamp->curr], 0);
+	if (currDevice->addr == -1) {
+		if (currDevice->curr > 0) {
+			mgos_gpio_write(currDevice->seq[currDevice->curr], 0);
 		}
 	}
 
-	currLamp->curr++;
+	currDevice->curr++;
 
-	if (currLamp->curr < currLamp->steps) {
-		if (currLamp->addr == -1) {
-			if (currLamp->seq[currLamp->curr] > 0) {
-				mgos_gpio_write(currLamp->seq[currLamp->curr], 1);
+	if (currDevice->curr < currDevice->steps) {
+		if (currDevice->addr == -1) {
+			if (currDevice->seq[currDevice->curr] > 0) {
+				mgos_gpio_write(currDevice->seq[currDevice->curr], 1);
 			}
 		} else {
-			_set_device_i2c(currLamp);
+			_set_device_i2c(currDevice);
 		}
-		mgos_set_hw_timer(1000 * currLamp->delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currLamp); 
+		mgos_set_hw_timer(1000 * currDevice->delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currDevice); 
 	}
 
  	(void) arg;
 }
  
 void test_device(int red, int yellow, int green, int last, int delay, int addr) {
-	static struct lamp_ctrl currLamp;
+	static struct device_ctrl currDevice;
 
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();
   static uint8_t pins;
   static uint8_t seq[] = { 0, 1, 2, 4, 0 };
   
-  currLamp.curr = 0;
-  currLamp.steps = 5;
-  currLamp.seq = seq;
-  currLamp.red = red;
-  currLamp.yellow = yellow;
-  currLamp.green = green;
-  currLamp.last = last;
-  currLamp.delay = delay;
-  currLamp.addr = addr;
-  currLamp.i2c = myI2C;
+  currDevice.curr = 0;
+  currDevice.steps = 5;
+  currDevice.seq = seq;
+  currDevice.red = red;
+  currDevice.yellow = yellow;
+  currDevice.green = green;
+  currDevice.last = last;
+  currDevice.delay = delay;
+  currDevice.addr = addr;
+  currDevice.i2c = myI2C;
  
- 	if (currLamp.addr == -1) {
+ 	if (currDevice.addr == -1) {
 		mgos_gpio_set_mode(red, MGOS_GPIO_MODE_OUTPUT);
 		mgos_gpio_set_pull(red, MGOS_GPIO_PULL_DOWN);
 		mgos_gpio_write(red, 0);
@@ -109,9 +108,9 @@ void test_device(int red, int yellow, int green, int last, int delay, int addr) 
 		mgos_gpio_set_pull(green, MGOS_GPIO_PULL_DOWN);
 		mgos_gpio_write(green, 0);
  	} else {
-	 	_set_device_i2c(&currLamp);
+	 	_set_device_i2c(&currDevice);
  	}
-	mgos_set_hw_timer(1000 * currLamp.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currLamp ); 
+	mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
 }
 
 bool devices_i2c_init(void) {

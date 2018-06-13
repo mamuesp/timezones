@@ -24,7 +24,7 @@ bool devices_i2c_init(void);
 void set_device_i2c(uint16_t addr, uint8_t pins);
 void test_lamp(int red, int yellow, int green, int last, int delay, int addr);
 
-IRAM void _set_device_i2c(struct device_ctrl *currLamp);
+IRAM void _set_device_i2c(struct device_ctrl *currDevice);
 IRAM void device_cb(void *arg);
 
 #endif // __MGOS_DEVICES_I2C_H
