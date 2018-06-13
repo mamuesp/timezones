@@ -128,7 +128,7 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
   currDevice.mode = MODE_BLINK;
   currDevice.bitmask = mask;
   currDevice.curr = pin;
-  currDevice.last = 0;
+  currDevice.last = 1;
   currDevice.delay = delay;
   currDevice.addr = addr;
   currDevice.i2c = myI2C;
