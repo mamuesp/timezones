@@ -19,7 +19,7 @@ struct device_ctrl {
 	struct mgos_i2c *i2c;
 };
 
-bool devices_i2c_init(void);
+bool mgos_devices_i2c_init(void);
 
 void set_device_i2c(uint16_t addr, uint8_t pins);
 void test_lamp(int red, int yellow, int green, int last, int delay, int addr);

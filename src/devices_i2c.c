@@ -113,6 +113,6 @@ void test_device(int red, int yellow, int green, int last, int delay, int addr) 
 	mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
 }
 
-bool devices_i2c_init(void) {
+bool mgos_devices_i2c_init(void) {
   return true;
 }
