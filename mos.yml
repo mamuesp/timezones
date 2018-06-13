@@ -6,8 +6,6 @@ version: 1.0
 sources:
   - src
 
-#config_schema:
-
 tags:
   - c
   - demo
