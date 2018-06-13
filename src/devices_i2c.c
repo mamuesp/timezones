@@ -79,11 +79,11 @@ IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
   if (currDevice->i2c != NULL) {
  		if (mgos_i2c_read(currDevice->i2c, currDevice->addr, &currPins, 1, true)) {
 			if (currDevice->mode == MODE_BLINK) {
-				newPins = currDevice->mask & (currDevice->last == 0 ? ~currDevice->curr : currDevice->curr);
+				newPins = currDevice->bitmask & (currDevice->last == 0 ? ~currDevice->curr : currDevice->curr);
 		  } else {
 				newPins = currDevice->seq[currDevice->curr];
 		  }
-		 	pins = (currPins & ~currDevice->mask) | (newPins & currDevice->mask);
+		 	pins = (currPins & ~currDevice->bitmask) | (newPins & currDevice->bitmask);
 		  mgos_i2c_write(currDevice->i2c, currDevice->addr, &pins, 1, true);
  		}
   }
@@ -113,7 +113,7 @@ void *blink_lamp(int pin, int delay, int addr, int mask) {
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();
   
   currDevice.mode = MODE_BLINK;
-  currDevice.mask = mask;
+  currDevice.bitmask = mask;
   currDevice.curr = pin;
   currDevice.last = 0;
   currDevice.delay = delay;
@@ -159,7 +159,7 @@ void *test_lamp(int red, int yellow, int green, int delay, int addr, int mask) {
   currDevice.red = red;
   currDevice.yellow = yellow;
   currDevice.green = green;
-  currDevice.mask = mask;
+  currDevice.bitmask = mask;
   currDevice.delay = delay;
   currDevice.addr = addr;
   currDevice.i2c = myI2C;
