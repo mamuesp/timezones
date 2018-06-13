@@ -80,10 +80,10 @@ IRAM void device_cb(void *arg) {
 }
  
 void test_lamp(int red, int yellow, int green, int last, int delay, int addr) {
+
 	static struct device_ctrl currDevice;
 
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();
-  static uint8_t pins;
   static uint8_t seq[] = { 0, 1, 2, 4, 0 };
   
   currDevice.curr = 0;
