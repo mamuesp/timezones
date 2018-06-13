@@ -145,6 +145,7 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 }
 
 int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice) {
+	
 	int delay = 500;
 	
 	static struct device_ctrl currDevice;
