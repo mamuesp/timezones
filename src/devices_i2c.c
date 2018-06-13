@@ -82,7 +82,7 @@ IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
   if (currDevice->i2c != NULL) {
  		if (mgos_i2c_read(currDevice->i2c, currDevice->addr, &currPins, 1, true)) {
 			if (currDevice->mode == MODE_BLINK) {
-				newPins = currDevice->bitmask & (currDevice->last == 0 ? ~currDevice->curr : currDevice->curr);
+				newPins = currDevice->bitmask & (currDevice->last == 0 ? (currDevice->curr ^ currDevice->curr) : currDevice->curr);
 		  } else {
 				newPins = currDevice->seq[currDevice->curr];
 		  }
