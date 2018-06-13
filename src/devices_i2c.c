@@ -12,7 +12,7 @@ void set_device_i2c(uint16_t addr, uint8_t pins, void *oldDevice) {
 	struct mgos_i2c *i2c;
 	
 	// if a timer is active, we stop it
-	if (currDevice->timerId != null) {
+	if (currDevice->timerId != NULL) {
 		mgos_clear_hw_timer(currDevice->timerId);
 	}
 
