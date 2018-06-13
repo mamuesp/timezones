@@ -67,7 +67,7 @@ IRAM void handleSequence(struct device_ctrl *currDevice) {
 IRAM void handleBlink(struct device_ctrl *currDevice) {
 	_set_device_i2c(currDevice);
 	currDevice->last = (currDevice->last == 1) ? 0 : 1;
-	currDevice->timerID = mgos_set_hw_timer(1000 * currDevice->delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currDevice); 
+	currDevice->timerId = mgos_set_hw_timer(1000 * currDevice->delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currDevice); 
 }
 
 IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
@@ -131,7 +131,7 @@ void *blink_lamp(int pin, int delay, int addr, int mask) {
  	} else {
 	 	_set_device_i2c(&currDevice);
  	}
-	currDevice.timerID = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
+	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
 	return &currDevice;
 }
 
@@ -175,7 +175,7 @@ void *test_lamp(int red, int yellow, int green, int delay, int addr, int mask) {
  	} else {
 	 	_set_device_i2c(&currDevice);
  	}
-	currDevice.timerID = mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
+	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
 	return &currDevice;
 }
 
