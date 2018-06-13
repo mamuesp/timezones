@@ -5,6 +5,7 @@
 #include "mgos_app.h"
 #include "mgos_i2c.h"
 #include "mgos_timers.h"
+#include "mgos_timers_mongoose.c"
 #include "esp32_hw_timers.h"
 
 #define MODE_SEQ   0
