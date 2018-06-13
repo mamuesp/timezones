@@ -79,7 +79,7 @@ IRAM void device_cb(void *arg) {
  	(void) arg;
 }
  
-void test_device(int red, int yellow, int green, int last, int delay, int addr) {
+void test_lamp(int red, int yellow, int green, int last, int delay, int addr) {
 	static struct device_ctrl currDevice;
 
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();
