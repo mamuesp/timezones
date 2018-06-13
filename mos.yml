@@ -1,0 +1,18 @@
+author: mongoose-os
+type: lib
+description: Collection of libraries for demos
+version: 1.0
+
+sources:
+  - src
+
+#config_schema:
+
+tags:
+  - c
+  - demo
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/i2c
+
+manifest_version: 2017-09-29
