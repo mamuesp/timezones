@@ -118,7 +118,7 @@ IRAM void device_cb(void *arg) {
  	(void) arg;
 }
 
-int blink_lamp(int pin, int delay, int addr, int masks, int oldDevice) {
+int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 
 	static struct device_ctrl currDevice;
 

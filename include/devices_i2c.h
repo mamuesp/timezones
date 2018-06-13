@@ -39,7 +39,7 @@ IRAM void _set_device_i2c(struct device_ctrl *currDevice);
 
 IRAM void device_cb(void *arg);
 
-int blink_lamp(int pin, int delay, int addr, int masks, int oldDevice);
+int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice);
 
 int test_lamp(int red, int yellow, int green, int delay, int addr, int mask, int oldDevice);
 
