@@ -144,20 +144,18 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 	return currDevice.timerId;
 }
 
-int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice) {
-	
-	int delay = 500;
-	
-	static struct device_ctrl currDevice;
+int test_lamp(char *args, int argLen, int oldDevice) {
 
+	struct lamp_config *lcCurr = getLampConfig(args, argLen);
+	static struct device_ctrl currDevice;
 	struct mgos_i2c *myI2C = mgos_i2c_get_global();
   static uint8_t seqI2C[5] = { 0, 1, 2, 4, 0 };
   static uint8_t seqGPIO[5];
   
   seqGPIO[0] = 0;
-  seqGPIO[1] = red;
-  seqGPIO[2] = yellow;
-  seqGPIO[3] = green;
+  seqGPIO[1] = lcCurr.RED;
+  seqGPIO[2] = lcCurr.YELLOW;
+  seqGPIO[3] = lcCurr.GREEN;
   seqGPIO[4] = 0;
 
   currDevice.activeTimerId = oldDevice;
@@ -165,30 +163,58 @@ int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice)
   currDevice.curr = 0;
   currDevice.last = 0;
   currDevice.steps = 5;
-  currDevice.seq = (addr == -1) ? seqGPIO : seqI2C;
-  currDevice.red = red;
-  currDevice.yellow = yellow;
-  currDevice.green = green;
-  currDevice.bitmask = mask;
-  currDevice.delay = delay;
-  currDevice.addr = addr;
+  currDevice.seq = (lcCurr.addr == -1) ? seqGPIO : seqI2C;
+  currDevice.red = lcCurr.RED;
+  currDevice.yellow = lcCurr.YELLOW;
+  currDevice.green = lcCurr.GREEN;
+  currDevice.bitmask = lcCurr.mask;
+  currDevice.delay = lcCurr.delay;
+  currDevice.addr = lcCurr.addr;
   currDevice.i2c = myI2C;
  
  	if (currDevice.addr == -1) {
-		mgos_gpio_set_mode(red, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(red, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(red, 0);
-		mgos_gpio_set_mode(yellow, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(yellow, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(yellow, 0);
-		mgos_gpio_set_mode(green, MGOS_GPIO_MODE_OUTPUT);
-		mgos_gpio_set_pull(green, MGOS_GPIO_PULL_DOWN);
-		mgos_gpio_write(green, 0);
+		mgos_gpio_set_mode(currDevice.red, MGOS_GPIO_MODE_OUTPUT);
+		mgos_gpio_set_pull(currDevice.red, MGOS_GPIO_PULL_DOWN);
+		mgos_gpio_write(currDevice.red, 0);
+		mgos_gpio_set_mode(currDevice.yellow, MGOS_GPIO_MODE_OUTPUT);
+		mgos_gpio_set_pull(currDevice.yellow, MGOS_GPIO_PULL_DOWN);
+		mgos_gpio_write(currDevice.yellow, 0);
+		mgos_gpio_set_mode(currDevice.green, MGOS_GPIO_MODE_OUTPUT);
+		mgos_gpio_set_pull(currDevice.green, MGOS_GPIO_PULL_DOWN);
+		mgos_gpio_write(currDevice.green, 0);
  	} else {
 	 	_set_device_i2c(&currDevice);
  	}
-	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay,  MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice ); 
+	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
 	return currDevice.timerId;
+}
+
+struct lamp_config *getLampConfig(const char *args, int argLen) {
+/*
+	char* buf = (char*) malloc(2 * argLen + 1);
+  for (int i = 0; i < argLen; ++i) {
+    snprintf(buf + 2 * i, 2 * (len - i) + 1, "%02x", str[i]);
+  }
+  LOG(LL_INFO, ("from js: %.*s, hex: %s", len, str, buf));
+  free(buf);
+*/
+  int RED, YELLOW, GREEN, delay, mask, addr;
+	static struct lamp_config lcCurr;
+  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr);
+  
+  lcCurr.RED = RED;
+  lcCurr.YELLOW = YELLOW;
+  lcCurr.GREEN = GREEN;
+  lcCurr.delay = delay;
+  lcCurr.mask = mask;
+  lcCurr.addr = addr;
+  
+  return &lcCurr;
+}
+
+const char* argsGetString(const void* data) {
+	return (const char*) data;
 }
 
 bool mgos_devices_i2c_init(void) {

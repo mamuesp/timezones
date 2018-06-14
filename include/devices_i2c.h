@@ -27,6 +27,16 @@ struct device_ctrl {
 	struct mgos_i2c *i2c;
 };
 
+struct lamp_config {
+	int RED;
+	int YELLOW;
+	int GREEN;
+//	int BLUE;
+	int delay;
+	int addr;
+	int mask;
+};
+
 void stopOldTimer(struct device_ctrl *currDevice);
 
 void set_device_i2c(uint16_t addr, uint8_t pins, int oldDevice);
@@ -41,7 +51,11 @@ IRAM void device_cb(void *arg);
 
 int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice);
 
-int test_lamp(int red, int yellow, int green, int addr, int mask, int oldDevice);
+int test_lamp(char *args, int argLen, int oldDevice);
+
+struct lamp_config *getLampConfig(char *args, int argLen);
+
+const char* argsGetString(const void* data);
 
 bool mgos_devices_i2c_init(void);
 
