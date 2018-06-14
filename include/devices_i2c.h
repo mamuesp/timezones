@@ -39,17 +39,17 @@ struct lamp_config {
 static struct device_ctrl currDevice;
 static struct lamp_config lcCurr;
 
-void stopOldTimer();
+void stopOldTimer(void);
 
 void set_device_i2c(uint16_t addr, uint8_t pins);
 
-IRAM void handleSequence();
+IRAM void handleSequence(void);
 
-IRAM void handleBlink();
+IRAM void handleBlink(void);
 
-IRAM void _set_device_i2c();
+IRAM void _set_device_i2c(void);
 
-IRAM void device_cb(void *arg);
+IRAM void device_cb(void);
 
 int blink_lamp(int pin, int delay, int addr, int mask);
 
