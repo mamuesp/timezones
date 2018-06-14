@@ -50,7 +50,7 @@ void set_device_i2c(uint16_t addr, uint8_t pins);
 void blink_lamp(int pin, int delay, int addr, int mask);
 void sequence_lamp(char *args, int argLen);
 struct lamp_config *getLampConfig(const char *args, int argLen);
-void scan_array(const char *str, int len, void *user_data);
+static void scan_array(const char *str, int len, void *user_data);
 
 bool mgos_devices_i2c_init(void);
 
