@@ -73,7 +73,7 @@ IRAM void handleBlink() {
 
 	if (currDevice.curr != 0) {
 		currDevice.last = (currDevice.last == 1) ? 0 : 1;
-		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currDevice); 
+		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
 	}
 }
 
