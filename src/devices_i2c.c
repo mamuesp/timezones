@@ -17,7 +17,7 @@ void stopOldTimer(struct device_ctrl *currDevice) {
 void set_device_i2c(uint16_t addr, uint8_t pins, int oldDevice) {
 	
   uint8_t currPins;
-	mgos_i2c *i2c;
+	struct mgos_i2c *i2c;
 
 	if (oldDevice != 0) {
 		mgos_clear_timer(oldDevice);
