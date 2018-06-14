@@ -6,6 +6,9 @@
  * 
  */
 
+static struct device_ctrl currDevice;
+static struct lamp_config lcCurr;
+
 void stopOldTimer(struct device_ctrl *currDevice) {
 	// if a timer is active, we stop it
 	if (currDevice->activeTimerId != 0) {
@@ -119,9 +122,7 @@ IRAM void device_cb(void *arg) {
 }
 
 int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
-
-	static struct device_ctrl currDevice;
-  
+	 
   currDevice.activeTimerId = oldDevice;
   currDevice.mode = MODE_BLINK;
   currDevice.bitmask = mask;
@@ -145,9 +146,8 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 int test_lamp(char *args, int argLen, int oldDevice) {
 
 	struct lamp_config *lcCurr = getLampConfig(args, argLen);
-	static struct device_ctrl currDevice;
   static uint8_t seqI2C[5] = { 0, 1, 2, 4, 0 };
-  uint8_t seqGPIO[5];
+  static uint8_t seqGPIO[5];
   
   seqGPIO[0] = 0;
   seqGPIO[1] = lcCurr->RED;
@@ -183,14 +183,15 @@ int test_lamp(char *args, int argLen, int oldDevice) {
 	 	_set_device_i2c(&currDevice);
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
+
+	void(lcCurr);
 	return currDevice.timerId;
 }
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
-  int RED, YELLOW, GREEN, delay, mask, addr;
-	static struct lamp_config lcCurr;
-
+  static int RED, YELLOW, GREEN, delay, mask, addr;
+	
   LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
   json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr);
   
