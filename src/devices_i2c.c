@@ -181,7 +181,7 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
   static int RED, YELLOW, GREEN, delay, mask, addr;
 	
   LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
-  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, scan_arry, lcCurr.seq);
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, scan_arry, (void *) lcCurr.seq);
   
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;

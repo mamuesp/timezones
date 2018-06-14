@@ -34,7 +34,7 @@ struct lamp_config {
 	int delay;
 	int addr;
 	int mask;
-  void *seq = NULL;
+  int *seq;
 };
 
 static struct device_ctrl currDevice;
