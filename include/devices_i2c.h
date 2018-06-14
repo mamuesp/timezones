@@ -49,7 +49,7 @@ IRAM void handleBlink(void);
 
 IRAM void _set_device_i2c(void);
 
-IRAM void device_cb(void);
+IRAM void device_cb(void *param);
 
 int blink_lamp(int pin, int delay, int addr, int mask);
 

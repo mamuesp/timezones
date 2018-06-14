@@ -98,7 +98,7 @@ IRAM void _set_device_i2c() {
   }
 }
 
-IRAM void device_cb(void *args) {
+IRAM void device_cb(void *param) {
 
   switch (currDevice.mode) {
   	case MODE_BLINK:
