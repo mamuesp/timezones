@@ -195,10 +195,12 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
 
 static void scan_array(const char *str, int len, void *user_data) {
 	struct json_token t;
+	int *array = (int *) user_data;
   int i;
-  LOG(LL_ERROR, ("Parsing array: %.*s\n", len, str));
+  LOG(LL_ERROR, ("Parsing array: %.*s", len, str));
   for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
-  	LOG(LL_ERROR, ("Index %d, token [%.*s]\n", i, t.len, t.ptr));
+  	array[i] = ((int) *t.ptr) - '0';
+  	LOG(LL_ERROR, ("Index %d, token [%.*s]", i, t.len, t.ptr));
   }
 }
 
