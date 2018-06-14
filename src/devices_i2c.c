@@ -16,8 +16,8 @@ void stopOldTimer(struct device_ctrl *currDevice) {
 
 void set_device_i2c(uint16_t addr, uint8_t pins, int oldDevice) {
 	
-  static uint8_t currPins;
-	struct mgos_i2c *i2c;
+  uint8_t currPins;
+	mgos_i2c *i2c;
 
 	if (oldDevice != 0) {
 		mgos_clear_timer(oldDevice);
@@ -82,9 +82,9 @@ IRAM void handleBlink(struct device_ctrl *currDevice) {
 
 IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
 
-  static uint8_t currPins;
-  static uint8_t pins;
-  static uint8_t newPins;
+  uint8_t currPins;
+  uint8_t pins;
+  uint8_t newPins;
 
 	stopOldTimer(currDevice);
 
@@ -103,7 +103,7 @@ IRAM void _set_device_i2c(struct device_ctrl *currDevice) {
 
 IRAM void device_cb(void *arg) {
 
-  struct device_ctrl *currDevice = (struct device_ctrl *) arg;;
+  struct device_ctrl *currDevice = (struct device_ctrl *) arg;
   
   switch (currDevice->mode) {
   	case MODE_BLINK:
@@ -121,8 +121,6 @@ IRAM void device_cb(void *arg) {
 int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 
 	static struct device_ctrl currDevice;
-
-	struct mgos_i2c *myI2C = mgos_i2c_get_global();
   
   currDevice.activeTimerId = oldDevice;
   currDevice.mode = MODE_BLINK;
@@ -131,7 +129,7 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
   currDevice.last = 1;
   currDevice.delay = delay;
   currDevice.addr = addr;
-  currDevice.i2c = myI2C;
+  currDevice.i2c = mgos_i2c_get_global();
  
  	if (currDevice.addr == -1) {
 		mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_OUTPUT);
@@ -146,11 +144,10 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 
 int test_lamp(char *args, int argLen, int oldDevice) {
 
-	struct lamp_config *lcCurr = getLampConfig(args, argLen);
+	lamp_config *lcCurr = getLampConfig(args, argLen);
 	static struct device_ctrl currDevice;
-	struct mgos_i2c *myI2C = mgos_i2c_get_global();
   static uint8_t seqI2C[5] = { 0, 1, 2, 4, 0 };
-  static uint8_t seqGPIO[5];
+  uint8_t seqGPIO[5];
   
   seqGPIO[0] = 0;
   seqGPIO[1] = lcCurr->RED;
@@ -170,7 +167,7 @@ int test_lamp(char *args, int argLen, int oldDevice) {
   currDevice.bitmask = lcCurr->mask;
   currDevice.delay = lcCurr->delay;
   currDevice.addr = lcCurr->addr;
-  currDevice.i2c = myI2C;
+  currDevice.i2c = mgos_i2c_get_global();
  
  	if (currDevice.addr == -1) {
 		mgos_gpio_set_mode(currDevice.red, MGOS_GPIO_MODE_OUTPUT);
