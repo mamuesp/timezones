@@ -144,7 +144,7 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice) {
 
 int test_lamp(char *args, int argLen, int oldDevice) {
 
-	lamp_config *lcCurr = getLampConfig(args, argLen);
+	struct lamp_config *lcCurr = getLampConfig(args, argLen);
 	static struct device_ctrl currDevice;
   static uint8_t seqI2C[5] = { 0, 1, 2, 4, 0 };
   uint8_t seqGPIO[5];
