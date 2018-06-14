@@ -55,8 +55,6 @@ int test_lamp(char *args, int argLen, int oldDevice);
 
 struct lamp_config *getLampConfig(const char *args, int argLen);
 
-const char* argsGetString(const void* data);
-
 bool mgos_devices_i2c_init(void);
 
 #endif // __MGOS_DEVICES_I2C_H

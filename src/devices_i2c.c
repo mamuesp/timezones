@@ -190,16 +190,10 @@ int test_lamp(char *args, int argLen, int oldDevice) {
 }
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
-/*
-	char* buf = (char*) malloc(2 * argLen + 1);
-  for (int i = 0; i < argLen; ++i) {
-    snprintf(buf + 2 * i, 2 * (len - i) + 1, "%02x", str[i]);
-  }
-  LOG(LL_INFO, ("from js: %.*s, hex: %s", len, str, buf));
-  free(buf);
-*/
+
   int RED, YELLOW, GREEN, delay, mask, addr;
 	static struct lamp_config lcCurr;
+
   LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
   json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr);
   
@@ -211,10 +205,6 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
   lcCurr.addr = addr;
   
   return &lcCurr;
-}
-
-const char* argsGetString(const void* data) {
-	return (const char*) data;
 }
 
 bool mgos_devices_i2c_init(void) {
