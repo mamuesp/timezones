@@ -113,7 +113,7 @@ IRAM void device_cb(void *param) {
 
 void blink_lamp(int pin, int delay, int addr, int mask) {
 	
-	stopOldGimer();
+	stopOldTimer();
 	 
   currDevice.mode = MODE_BLINK;
   currDevice.bitmask = mask;
