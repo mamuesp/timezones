@@ -6,36 +6,12 @@
  * 
  */
 
-void stopOldTimer() {
+IRAM void stopOldTimer() {
 	// if a timer is active, we stop it
 	if (currDevice.timerId != 0) {
 		mgos_clear_timer(currDevice.timerId);
 		currDevice.timerId = 0;
  	}
-}
-
-void set_device_i2c(uint16_t addr, uint8_t pins) {
-	
-  uint8_t currPins;
-	struct mgos_i2c *i2c;
-
-	stopOldTimer();
-
-	i2c = mgos_i2c_get_global();
-  if (i2c == NULL) {
-    LOG(LL_DEBUG, ("I2C is disabled - error: %d", 503));
-  } else {
- 		if (!mgos_i2c_read(i2c, addr, &currPins, 1, true)) {
-    	LOG(LL_DEBUG, ("I2C read failed - error: %d", 503));
- 		} else {
-			LOG(LL_INFO, ("I2C read - addr: %d - pins: %d", addr, currPins));
-		 	pins = (currPins & 0xF8) | pins;
-			LOG(LL_INFO, ("I2C write - addr: %d - pins: %d", addr, pins));
-		  if (!mgos_i2c_write(i2c, addr, &pins, 1, true)) {
-  	  	LOG(LL_DEBUG, ("I2C write failed - error: %d", 503));
-			}
- 		}
-  }
 }
 
 IRAM void handleSequence() {
@@ -111,6 +87,30 @@ IRAM void device_cb(void *param) {
   }
 }
 
+void set_device_i2c(uint16_t addr, uint8_t pins) {
+	
+  uint8_t currPins;
+	struct mgos_i2c *i2c;
+
+	stopOldTimer();
+
+	i2c = mgos_i2c_get_global();
+  if (i2c == NULL) {
+    LOG(LL_DEBUG, ("I2C is disabled - error: %d", 503));
+  } else {
+ 		if (!mgos_i2c_read(i2c, addr, &currPins, 1, true)) {
+    	LOG(LL_DEBUG, ("I2C read failed - error: %d", 503));
+ 		} else {
+			LOG(LL_INFO, ("I2C read - addr: %d - pins: %d", addr, currPins));
+		 	pins = (currPins & 0xF8) | pins;
+			LOG(LL_INFO, ("I2C write - addr: %d - pins: %d", addr, pins));
+		  if (!mgos_i2c_write(i2c, addr, &pins, 1, true)) {
+  	  	LOG(LL_DEBUG, ("I2C write failed - error: %d", 503));
+			}
+ 		}
+  }
+}
+
 void blink_lamp(int pin, int delay, int addr, int mask) {
 	
 	stopOldTimer();
@@ -176,14 +176,6 @@ void sequence_lamp(char *args, int argLen) {
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
 
-static void scan_array(const char *str, int len, void *user_data) {
-	struct json_token t;
-  int i;
-  LOG(LL_ERROR, ("Parsing array: %.*s\n", len, str));
-  for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
-  	LOG(LL_ERROR, ("Index %d, token [%.*s]\n", i, t.len, t.ptr));
-  }
-}
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
   static int RED, YELLOW, GREEN, delay, mask, addr;
@@ -199,6 +191,15 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
   lcCurr.addr = addr;
   
   return &lcCurr;
+}
+
+static void scan_array(const char *str, int len, void *user_data) {
+	struct json_token t;
+  int i;
+  LOG(LL_ERROR, ("Parsing array: %.*s\n", len, str));
+  for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
+  	LOG(LL_ERROR, ("Index %d, token [%.*s]\n", i, t.len, t.ptr));
+  }
 }
 
 bool mgos_devices_i2c_init(void) {
