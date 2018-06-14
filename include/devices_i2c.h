@@ -23,7 +23,6 @@ struct device_ctrl {
 	uint16_t delay;
 	uint8_t *seq;
 	mgos_timer_id timerId;
-	mgos_timer_id activeTimerId;
 	struct mgos_i2c *i2c;
 };
 
@@ -37,21 +36,24 @@ struct lamp_config {
 	int mask;
 };
 
-void stopOldTimer(struct device_ctrl *currDevice);
+static struct device_ctrl currDevice;
+static struct lamp_config lcCurr;
 
-void set_device_i2c(uint16_t addr, uint8_t pins, int oldDevice);
+void stopOldTimer();
 
-IRAM void handleSequence(struct device_ctrl *currDevice);
+void set_device_i2c(uint16_t addr, uint8_t pins);
 
-IRAM void handleBlink(struct device_ctrl *currDevice);
+IRAM void handleSequence();
 
-IRAM void _set_device_i2c(struct device_ctrl *currDevice);
+IRAM void handleBlink();
+
+IRAM void _set_device_i2c();
 
 IRAM void device_cb(void *arg);
 
-int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice);
+int blink_lamp(int pin, int delay, int addr, int mask);
 
-int test_lamp(char *args, int argLen, int oldDevice);
+int test_lamp(char *args, int argLen);
 
 struct lamp_config *getLampConfig(const char *args, int argLen);
 
