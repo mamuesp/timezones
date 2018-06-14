@@ -64,7 +64,7 @@ IRAM void handleSequence() {
 		} else {
 			_set_device_i2c(currDevice);
 		}
-		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, currDevice); 
+		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
 	}
 }
 
