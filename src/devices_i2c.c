@@ -184,7 +184,6 @@ int test_lamp(char *args, int argLen, int oldDevice) {
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, &currDevice); 
 
-	void(lcCurr);
 	return currDevice.timerId;
 }
 
