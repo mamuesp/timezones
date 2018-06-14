@@ -34,6 +34,7 @@ struct lamp_config {
 	int delay;
 	int addr;
 	int mask;
+  void *seq = NULL;
 };
 
 static struct device_ctrl currDevice;
@@ -53,7 +54,7 @@ IRAM void device_cb(void *param);
 
 void blink_lamp(int pin, int delay, int addr, int mask);
 
-void test_lamp(char *args, int argLen);
+void sequence_lamp(char *args, int argLen);
 
 struct lamp_config *getLampConfig(const char *args, int argLen);
 

@@ -133,7 +133,7 @@ void blink_lamp(int pin, int delay, int addr, int mask) {
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
 
-void test_lamp(char *args, int argLen) {
+void sequence_lamp(char *args, int argLen) {
 
 	struct lamp_config *lcCurr = getLampConfig(args, argLen);
   static uint8_t seqI2C[5] = { 0, 1, 2, 4, 0 };
@@ -176,12 +176,20 @@ void test_lamp(char *args, int argLen) {
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
 
+static void scan_array(const char *str, int len, void *user_data) {
+	struct json_token t;
+  int i;
+  LOG(LL_ERROR, ("Parsing array: %.*s\n", len, str));
+  for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
+  	LOG(LL_ERROR, ("Index %d, token [%.*s]\n", i, t.len, t.ptr));
+  }
+}
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
   static int RED, YELLOW, GREEN, delay, mask, addr;
 	
   LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
-  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr);
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, scan_arry, lcCurr.seq);
   
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;
