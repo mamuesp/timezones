@@ -128,7 +128,7 @@ void blink_lamp(int pin, int delay, int addr, int mask) {
 		mgos_gpio_set_pull(pin, MGOS_GPIO_PULL_DOWN);
 		mgos_gpio_write(pin, 0);
  	} else {
-	 	_set_device_i2c(&currDevice);
+	 	_set_device_i2c();
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 	return currDevice.timerId;
@@ -172,7 +172,7 @@ void test_lamp(char *args, int argLen) {
 		mgos_gpio_set_pull(currDevice.green, MGOS_GPIO_PULL_DOWN);
 		mgos_gpio_write(currDevice.green, 0);
  	} else {
-	 	_set_device_i2c(&currDevice);
+	 	_set_device_i2c();
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
