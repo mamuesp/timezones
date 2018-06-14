@@ -51,9 +51,9 @@ IRAM void _set_device_i2c(void);
 
 IRAM void device_cb(void *param);
 
-int blink_lamp(int pin, int delay, int addr, int mask);
+void blink_lamp(int pin, int delay, int addr, int mask);
 
-int test_lamp(char *args, int argLen);
+void test_lamp(char *args, int argLen);
 
 struct lamp_config *getLampConfig(const char *args, int argLen);
 
