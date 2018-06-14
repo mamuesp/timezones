@@ -131,7 +131,6 @@ void blink_lamp(int pin, int delay, int addr, int mask) {
 	 	_set_device_i2c();
  	}
 	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
-	return currDevice.timerId;
 }
 
 void test_lamp(char *args, int argLen) {
