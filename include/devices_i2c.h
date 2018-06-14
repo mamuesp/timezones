@@ -53,7 +53,7 @@ int blink_lamp(int pin, int delay, int addr, int mask, int oldDevice);
 
 int test_lamp(char *args, int argLen, int oldDevice);
 
-struct lamp_config *getLampConfig(char *args, int argLen);
+struct lamp_config *getLampConfig(const char *args, int argLen);
 
 const char* argsGetString(const void* data);
 
