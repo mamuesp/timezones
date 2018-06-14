@@ -153,9 +153,9 @@ int test_lamp(char *args, int argLen, int oldDevice) {
   static uint8_t seqGPIO[5];
   
   seqGPIO[0] = 0;
-  seqGPIO[1] = lcCurr.RED;
-  seqGPIO[2] = lcCurr.YELLOW;
-  seqGPIO[3] = lcCurr.GREEN;
+  seqGPIO[1] = lcCurr->RED;
+  seqGPIO[2] = lcCurr->YELLOW;
+  seqGPIO[3] = lcCurr->GREEN;
   seqGPIO[4] = 0;
 
   currDevice.activeTimerId = oldDevice;
@@ -163,13 +163,13 @@ int test_lamp(char *args, int argLen, int oldDevice) {
   currDevice.curr = 0;
   currDevice.last = 0;
   currDevice.steps = 5;
-  currDevice.seq = (lcCurr.addr == -1) ? seqGPIO : seqI2C;
-  currDevice.red = lcCurr.RED;
-  currDevice.yellow = lcCurr.YELLOW;
-  currDevice.green = lcCurr.GREEN;
-  currDevice.bitmask = lcCurr.mask;
-  currDevice.delay = lcCurr.delay;
-  currDevice.addr = lcCurr.addr;
+  currDevice.seq = (lcCurr->addr == -1) ? seqGPIO : seqI2C;
+  currDevice.red = lcCurr->RED;
+  currDevice.yellow = lcCurr->YELLOW;
+  currDevice.green = lcCurr->GREEN;
+  currDevice.bitmask = lcCurr->mask;
+  currDevice.delay = lcCurr->delay;
+  currDevice.addr = lcCurr->addr;
   currDevice.i2c = myI2C;
  
  	if (currDevice.addr == -1) {
