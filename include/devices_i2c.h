@@ -15,6 +15,7 @@ struct device_ctrl {
 	uint8_t mode;
 	uint8_t bitmask;
 	uint8_t last;
+	uint8_t previous;
 	uint8_t curr;
 	uint8_t steps;
 	uint8_t red;
