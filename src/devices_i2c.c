@@ -20,6 +20,7 @@ IRAM void handleSequence() {
 			mgos_gpio_write(currDevice.red, 0);
 			mgos_gpio_write(currDevice.yellow, 0);
 			mgos_gpio_write(currDevice.green, 0);
+  	  LOG(LL_ERROR, ("handleSequence: previous lamp - %d", currDevice.previous));
 			if (currDevice.previous > 0) {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
