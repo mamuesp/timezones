@@ -34,6 +34,7 @@ struct lamp_config {
 //	int BLUE;
 	int delay;
 	int addr;
+	int previous;
 	int mask;
   int seq[32];
 };

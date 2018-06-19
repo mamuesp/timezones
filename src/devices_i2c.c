@@ -156,6 +156,7 @@ void sequence_lamp(char *args, int argLen) {
   currDevice.steps = 5;
   currDevice.seq = (lcCurr->addr == -1) ? seqGPIO : seqI2C;
   currDevice.red = lcCurr->RED;
+  currDevice.previous = lcCurr->previous;
   currDevice.yellow = lcCurr->YELLOW;
   currDevice.green = lcCurr->GREEN;
   currDevice.bitmask = lcCurr->mask;
