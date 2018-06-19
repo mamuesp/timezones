@@ -21,7 +21,7 @@ IRAM void handleSequence() {
 			mgos_gpio_write(currDevice.yellow, 0);
 			mgos_gpio_write(currDevice.green, 0);
 			if (currDevice.previous > 0) {
-				mgos_gpio_write(currDevice.previous, 0);
+				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
 			currDevice.curr = (currDevice.previous > 0) ? currDevice.previous : 0;
