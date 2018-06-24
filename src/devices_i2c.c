@@ -75,7 +75,8 @@ IRAM void _set_device_i2c() {
 				newPins = currDevice.seq[currDevice.curr];
 		  }
 		 	pins = (currPins & ~currDevice.bitmask) | (newPins & currDevice.bitmask);
-		  mgos_i2c_write(currDevice.i2c, currDevice.addr, &pins, 1, true);
+			mgos_i2c_write_bits_w(currDevice.i2c, currDevice.addr, 0, 3, pins, true);
+//		  mgos_i2c_write(currDevice.i2c, currDevice.addr, &pins, 1, true);
  		}
   }
 }
