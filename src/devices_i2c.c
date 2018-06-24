@@ -69,8 +69,8 @@ IRAM void _set_device_i2c() {
  		if (mgos_i2c_read(currDevice.i2c, currDevice.addr, &currPins, 1, true)) {
 			if (currDevice.mode == MODE_BLINK) {
 				newPins = currDevice.bitmask & (currDevice.last == 0 ? (currDevice.curr ^ currDevice.curr) : currDevice.curr);
-				//mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, newPins, true);
-				mgos_i2c_write(currDevice.i2c, currDevice.addr, &newPins, 1, true);
+				mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, newPins, true);
+				//mgos_i2c_write(currDevice.i2c, currDevice.addr, &newPins, 1, true);
 		  } else {
 				newPins = currDevice.seq[currDevice.curr];
 		  }
@@ -78,8 +78,8 @@ IRAM void _set_device_i2c() {
 // LOG(LL_ERROR, ("I2C mgos_i2c_write_bits_b - addr: 0x%x", currDevice.addr));
 // LOG(LL_ERROR, ("I2C mgos_i2c_write_bits_b - pins: 0x%x", pins));
 		 	
-			//mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, pins, true);
-		  mgos_i2c_write(currDevice.i2c, currDevice.addr, &pins, 1, true);
+			mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, pins, true);
+		  //mgos_i2c_write(currDevice.i2c, currDevice.addr, &pins, 1, true);
  		}
   }
 }
