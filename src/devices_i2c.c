@@ -24,7 +24,6 @@ IRAM void handleSequence() {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
-  	  LOG(LL_ERROR, ("handleSequence: previous lamp - %d", currDevice.previous));
 			currDevice.curr = (currDevice.previous > 0) ? currDevice.previous : 0;
 			_set_device_i2c();
 		}
@@ -184,21 +183,21 @@ void sequence_lamp(char *args, int argLen) {
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
-  static int RED, YELLOW, GREEN, delay, mask, addr, previous;
+  //static int RED, YELLOW, GREEN, delay, mask, addr, previous;
 	
 //  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
-  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, &lcCurr.previous, scan_array, (void *) lcCurr.seq);
-  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", RED, YELLOW, GREEN, delay, mask, addr, previous));
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &lcCurr.RED, &lcCurr.YELLOW, &lcCurr.GREEN, &lcCurr.delay, &lcCurr.mask, &lcCurr.addr, &lcCurr.previous, scan_array, (void *) lcCurr.seq);
 //  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay = delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
   
-//  lcCurr.previous = previous;
+/*
+  lcCurr.previous = previous;
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;
   lcCurr.GREEN = GREEN;
   lcCurr.delay = delay;
   lcCurr.mask = mask;
   lcCurr.addr = addr;
-  
+*/  
   return &lcCurr;
 }
 
@@ -206,10 +205,10 @@ static void scan_array(const char *str, int len, void *user_data) {
 	struct json_token t;
 	uint8_t *array = (uint8_t *) user_data;
   int i;
-  LOG(LL_ERROR, ("Parsing array: %.*s", len, str));
+  LOG(LL_DEBUG, ("Parsing array: %.*s", len, str));
   for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
   	array[i] = ((uint8_t) *t.ptr) - '0';
-  	LOG(LL_ERROR, ("Index %d, token [%.*s]", i, t.len, t.ptr));
+  	LOG(LL_DEBUG, ("Index %d, token [%.*s]", i, t.len, t.ptr));
   }
 }
 
