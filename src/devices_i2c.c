@@ -17,6 +17,7 @@ void stopOldTimer() {
 
 //IRAM void handleSequence() {
 void handleSequence() {
+	LOG(LL_ERROR, ("Current pos: %d", currDevice.curr));
 	if (currDevice.curr >= currDevice.steps) {
 		if (currDevice.addr == -1) {
 			mgos_gpio_write(currDevice.red, 0);
@@ -27,7 +28,6 @@ void handleSequence() {
 			}
 		} else {
 			LOG(LL_ERROR, ("Switch to previous: %d", currDevice.previous));
-
 			currDevice.curr = currDevice.previous;
 			_set_device_i2c();
 		}
@@ -185,7 +185,8 @@ void sequence_lamp(char *args, int argLen) {
  	} else {
 	 	_set_device_i2c();
  	}
-	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
+	currDevice.timerId = mgos_set_timer(currDevice.delay, 0, device_cb, NULL); 
+//	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
