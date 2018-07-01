@@ -20,11 +20,11 @@ IRAM void handleSequence() {
 			mgos_gpio_write(currDevice.red, 0);
 			mgos_gpio_write(currDevice.yellow, 0);
 			mgos_gpio_write(currDevice.green, 0);
-  	  LOG(LL_ERROR, ("handleSequence: previous lamp - %d", currDevice.previous));
 			if (currDevice.previous > 0) {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
+  	  LOG(LL_ERROR, ("handleSequence: previous lamp - %d", currDevice.previous));
 			currDevice.curr = (currDevice.previous > 0) ? currDevice.previous : 0;
 			_set_device_i2c();
 		}
@@ -69,16 +69,11 @@ IRAM void _set_device_i2c() {
  		if (mgos_i2c_read(currDevice.i2c, currDevice.addr, &currPins, 1, true)) {
 			if (currDevice.mode == MODE_BLINK) {
 				newPins = currDevice.bitmask & (currDevice.last == 0 ? (currDevice.curr ^ currDevice.curr) : currDevice.curr);
-				//mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, newPins, true);
 				mgos_i2c_write(currDevice.i2c, currDevice.addr, &newPins, 1, true);
 		  } else {
 				newPins = currDevice.seq[currDevice.curr];
 		  }
 		 	pins = (currPins & ~currDevice.bitmask) | (newPins & currDevice.bitmask);
-// LOG(LL_ERROR, ("I2C mgos_i2c_write_bits_b - addr: 0x%x", currDevice.addr));
-// LOG(LL_ERROR, ("I2C mgos_i2c_write_bits_b - pins: 0x%x", pins));
-		 	
-			//mgos_i2c_write_bits_b(currDevice.i2c, currDevice.addr, 0, 3, pins, true);
 		  mgos_i2c_write(currDevice.i2c, currDevice.addr, &pins, 1, true);
  		}
   }
@@ -189,11 +184,14 @@ void sequence_lamp(char *args, int argLen) {
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
-  static int RED, YELLOW, GREEN, delay, mask, addr, previous;
+  static int RED, YELLOW, GREEN, delay, mask, addr, previous, *seq;
 	
-  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
-  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, &previous, scan_array, (void *) lcCurr.seq);
+//  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, &previous, scan_array, (void *) seq);
+  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", RED, YELLOW, GREEN, delay, mask, addr, previous));
+//  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay = delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
   
+  lcCurr.seq = seq;
   lcCurr.previous = previous;
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;
@@ -209,10 +207,10 @@ static void scan_array(const char *str, int len, void *user_data) {
 	struct json_token t;
 	int *array = (int *) user_data;
   int i;
-  LOG(LL_DEBUG, ("Parsing array: %.*s", len, str));
+  LOG(LL_ERROR, ("Parsing array: %.*s", len, str));
   for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
   	array[i] = ((int) *t.ptr) - '0';
-  	LOG(LL_DEBUG, ("Index %d, token [%.*s]", i, t.len, t.ptr));
+  	LOG(LL_ERROR, ("Index %d, token [%.*s]", i, t.len, t.ptr));
   }
 }
 
