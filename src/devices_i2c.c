@@ -6,7 +6,8 @@
  * 
  */
 
-IRAM void stopOldTimer() {
+//IRAM void stopOldTimer() {
+void stopOldTimer() {
 	// if a timer is active, we stop it
 	if (currDevice.timerId != 0) {
 		mgos_clear_timer(currDevice.timerId);
@@ -14,7 +15,8 @@ IRAM void stopOldTimer() {
  	}
 }
 
-IRAM void handleSequence() {
+//IRAM void handleSequence() {
+void handleSequence() {
 	if (currDevice.curr >= currDevice.steps) {
 		if (currDevice.addr == -1) {
 			mgos_gpio_write(currDevice.red, 0);
@@ -25,7 +27,8 @@ IRAM void handleSequence() {
 			}
 		} else {
 			currDevice.curr = currDevice.previous;
-			_set_device_i2c();
+			set_device_i2c();
+//			_set_device_i2c();
 		}
 		return;
 	}
@@ -41,9 +44,11 @@ IRAM void handleSequence() {
 				mgos_gpio_write(currDevice.seq[currDevice.curr], 1);
 			}
 		} else {
-			_set_device_i2c();
+			set_device_i2c();
+//			_set_device_i2c();
 		}
-		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
+//		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
+		currDevice.timerId = mgos_set_timer(currDevice.delay, 0, device_cb, NULL); 
 	}
 }
 
@@ -78,7 +83,8 @@ IRAM void _set_device_i2c() {
   }
 }
 
-IRAM void device_cb(void *param) {
+//IRAM void device_cb(void *param) {
+void device_cb(void *param) {
 
   switch (currDevice.mode) {
   	case MODE_BLINK:
