@@ -6,8 +6,7 @@
  * 
  */
 
-//IRAM void stopOldTimer() {
-void stopOldTimer() {
+IRAM void stopOldTimer() {
 	// if a timer is active, we stop it
 	if (currDevice.timerId != 0) {
 		mgos_clear_timer(currDevice.timerId);
@@ -15,9 +14,7 @@ void stopOldTimer() {
  	}
 }
 
-//IRAM void handleSequence() {
-void handleSequence() {
-	LOG(LL_ERROR, ("Current pos: %d", currDevice.curr));
+IRAM void handleSequence() {
 	if (currDevice.curr >= currDevice.steps - 1) {
 		if (currDevice.addr == -1) {
 			mgos_gpio_write(currDevice.red, 0);
@@ -27,7 +24,6 @@ void handleSequence() {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
-			LOG(LL_ERROR, ("Switch to previous: %d", currDevice.previous));
 			currDevice.curr = currDevice.previous;
 			_set_device_i2c();
 		}
@@ -47,8 +43,7 @@ void handleSequence() {
 		} else {
 			_set_device_i2c();
 		}
-//		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
-		currDevice.timerId = mgos_set_timer(currDevice.delay, 0, device_cb, NULL); 
+		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 	}
 }
 
@@ -61,8 +56,7 @@ IRAM void handleBlink() {
 	}
 }
 
-//IRAM void _set_device_i2c() {
-void _set_device_i2c() {
+IRAM void _set_device_i2c() {
 
   uint8_t currPins;
   uint8_t pins;
@@ -84,8 +78,7 @@ void _set_device_i2c() {
   }
 }
 
-//IRAM void device_cb(void *param) {
-void device_cb(void *param) {
+IRAM void device_cb(void *param) {
 
   switch (currDevice.mode) {
   	case MODE_BLINK:
@@ -185,15 +178,13 @@ void sequence_lamp(char *args, int argLen) {
  	} else {
 	 	_set_device_i2c();
  	}
-	currDevice.timerId = mgos_set_timer(currDevice.delay, 0, device_cb, NULL); 
-//	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
+	currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 }
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
   json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &lcCurr.RED, &lcCurr.YELLOW, &lcCurr.GREEN, &lcCurr.delay, &lcCurr.mask, &lcCurr.addr, &lcCurr.previous, scan_array, (void *) lcCurr.seq);
-  // lcCurr.previous = lcCurr.seq[lcCurr.previous];
-  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
+  LOG(LL_DEBUG, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
   return &lcCurr;
 }
 
