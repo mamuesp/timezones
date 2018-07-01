@@ -26,9 +26,10 @@ void handleSequence() {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
+			LOG(LL_ERROR, ("Switch to previous: %d", currDevice.previous));
+
 			currDevice.curr = currDevice.previous;
-			set_device_i2c();
-//			_set_device_i2c();
+			_set_device_i2c();
 		}
 		return;
 	}
@@ -44,8 +45,7 @@ void handleSequence() {
 				mgos_gpio_write(currDevice.seq[currDevice.curr], 1);
 			}
 		} else {
-			set_device_i2c();
-//			_set_device_i2c();
+			_set_device_i2c();
 		}
 //		currDevice.timerId = mgos_set_hw_timer(1000 * currDevice.delay, MGOS_ESP32_HW_TIMER_IRAM, device_cb, NULL); 
 		currDevice.timerId = mgos_set_timer(currDevice.delay, 0, device_cb, NULL); 
@@ -61,7 +61,8 @@ IRAM void handleBlink() {
 	}
 }
 
-IRAM void _set_device_i2c() {
+//IRAM void _set_device_i2c() {
+void _set_device_i2c() {
 
   uint8_t currPins;
   uint8_t pins;
