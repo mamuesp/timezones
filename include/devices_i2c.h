@@ -22,7 +22,7 @@ struct device_ctrl {
 	uint8_t yellow;
 	uint8_t green;
 	uint16_t delay;
-	uint8_t seq;
+	uint8_t *seq;
 	mgos_timer_id timerId;
 	struct mgos_i2c *i2c;
 };
