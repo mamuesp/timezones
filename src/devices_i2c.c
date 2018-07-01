@@ -24,7 +24,7 @@ IRAM void handleSequence() {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
-			currDevice.curr = (currDevice.previous > 0) ? currDevice.previous : 0;
+			currDevice.curr = (currDevice.previous != 0) ? currDevice.previous : 0;
 			_set_device_i2c();
 		}
 		return;
@@ -183,19 +183,9 @@ void sequence_lamp(char *args, int argLen) {
 
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
-  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
   json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &lcCurr.RED, &lcCurr.YELLOW, &lcCurr.GREEN, &lcCurr.delay, &lcCurr.mask, &lcCurr.addr, &lcCurr.previous, scan_array, (void *) lcCurr.seq);
+  // lcCurr.previous = lcCurr.seq[lcCurr.previous];
   LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
-  
-/*
-  lcCurr.previous = previous;
-  lcCurr.RED = RED;
-  lcCurr.YELLOW = YELLOW;
-  lcCurr.GREEN = GREEN;
-  lcCurr.delay = delay;
-  lcCurr.mask = mask;
-  lcCurr.addr = addr;
-*/  
   return &lcCurr;
 }
 
