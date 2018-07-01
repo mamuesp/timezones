@@ -24,7 +24,7 @@ IRAM void handleSequence() {
 				mgos_gpio_write(currDevice.previous, 1);
 			}
 		} else {
-			currDevice.curr = (currDevice.previous != 0) ? currDevice.previous : 0;
+			currDevice.curr = currDevice.previous;
 			_set_device_i2c();
 		}
 		return;
