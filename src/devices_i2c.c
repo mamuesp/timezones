@@ -191,7 +191,7 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
   LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", RED, YELLOW, GREEN, delay, mask, addr, previous));
 //  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay = delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
   
-  lcCurr.seq = (uint8_t) seq;
+  lcCurr.seq = (uint8_t *) seq;
   lcCurr.previous = previous;
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;
