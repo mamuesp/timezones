@@ -185,15 +185,13 @@ void sequence_lamp(char *args, int argLen) {
 struct lamp_config *getLampConfig(const char *args, int argLen) {
 
   static int RED, YELLOW, GREEN, delay, mask, addr, previous;
-  uint8_t *seq;
 	
 //  LOG(LL_ERROR, ("getLampConfig: %.*s", argLen, args));
-  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, &previous, scan_array, (void *) seq);
+  json_scanf(args, argLen, "{ RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d, seq:%M }", &RED, &YELLOW, &GREEN, &delay, &mask, &addr, &lcCurr.previous, scan_array, (void *) lcCurr.seq);
   LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", RED, YELLOW, GREEN, delay, mask, addr, previous));
 //  LOG(LL_ERROR, ("Parsed result lcCurr: { RED:%d, YELLOW:%d, GREEN:%d, delay:%d, mask:%d, addr:%d, previous:%d }", lcCurr.RED, lcCurr.YELLOW, lcCurr.GREEN, lcCurr.delay = delay, lcCurr.mask, lcCurr.addr, lcCurr.previous));
   
-  lcCurr.seq = (uint8_t *) seq;
-  lcCurr.previous = previous;
+//  lcCurr.previous = previous;
   lcCurr.RED = RED;
   lcCurr.YELLOW = YELLOW;
   lcCurr.GREEN = GREEN;
@@ -206,11 +204,11 @@ struct lamp_config *getLampConfig(const char *args, int argLen) {
 
 static void scan_array(const char *str, int len, void *user_data) {
 	struct json_token t;
-	int *array = (int *) user_data;
+	uint8_t *array = (uint8_t *) user_data;
   int i;
   LOG(LL_ERROR, ("Parsing array: %.*s", len, str));
   for (i = 0; json_scanf_array_elem(str, len, "", i, &t) > 0; i++) {
-  	array[i] = ((byte) *t.ptr) - '0';
+  	array[i] = ((uint8_t) *t.ptr) - '0';
   	LOG(LL_ERROR, ("Index %d, token [%.*s]", i, t.len, t.ptr));
   }
 }
