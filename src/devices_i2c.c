@@ -18,7 +18,7 @@ void stopOldTimer() {
 //IRAM void handleSequence() {
 void handleSequence() {
 	LOG(LL_ERROR, ("Current pos: %d", currDevice.curr));
-	if (currDevice.curr >= currDevice.steps) {
+	if (currDevice.curr >= currDevice.steps - 1) {
 		if (currDevice.addr == -1) {
 			mgos_gpio_write(currDevice.red, 0);
 			mgos_gpio_write(currDevice.yellow, 0);
