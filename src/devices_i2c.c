@@ -48,13 +48,7 @@ IRAM void handleSequence() {
 }
 
 IRAM void handleBlink() {
-
- 	if (currDevice.addr == -1) {
-		currDevice.last = (currDevice.last == 1) ? 0 : 1;
-		mgos_gpio_write(currDevice.curr, currDevice.last);
- 	} else {
-	 	_set_device_i2c();
- 	}
+ 	_set_device_i2c();
 
 	if (currDevice.curr != 0) {
 		currDevice.last = (currDevice.last == 1) ? 0 : 1;
