@@ -16,28 +16,63 @@ TZINFO.moveData('/mnt');
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 
+// this is the object you may use
 TZINFO = {...};
 
+// some internals variables:
+// _dataPath contains the filesystem where the timezone data is stored,
+// if it si an empty string, the defsault filesystem ist used, if not,
+// it contains the additional filesystem to use
 TZINFO._dataPath: Cfg.get('timezone.data_path'),
+
+// _dataGroups shows the names of the grouping of the data, mostly the
+// The data is splitted into multiple files to save time when loading them
+// because of the wished timezone its clear, where to look and so only the
+// needed data is loaded.
 TZINFO._dataGroups: ["Africa", "America", "Asia", "Europe", "Others"],
 
-	// 
+// _dataFiles holds the filenames of the stored timezone data
 TZINFO._dataFiles: {
-		Africa: 'africa-tz.min.json',
-		America: 'america-tz.min.json',
-		Asia: 'asia-tz.min.json',
-		Europe: 'europe-tz.min.json',
-		Others: 'others-tz.min.json'
-	},
+  Africa: 'africa-tz.min.json',
+  America: 'america-tz.min.json',
+  Asia: 'asia-tz.min.json',
+  Europe: 'europe-tz.min.json',
+  Others: 'others-tz.min.json'
+},
 	
+/**
+ * This will set the converted timezone in POSIX format in the system configuration
+ * internal function
+ * Parameter: String tzSpecStr - the result of the conversion called before
+ **/
 TZINFO.getFileName(path, name)
 	
+/**
+ * This will set the converted timezone in POSIX format in the system configuration
+ * internal function
+ * Parameter: String tzSpecStr - the result of the conversion called before
+ **/
 TZINFO.moveData(target, doForce)
 
+/**
+ * This will set the converted timezone in POSIX format in the system configuration
+ * internal function
+ * Parameter: String tzSpecStr - the result of the conversion called before
+ **/
 TZINFO.moveFile(srcName, target)
 	
+/**
+ * This will set the converted timezone in POSIX format in the system configuration
+ * internal function
+ * Parameter: String tzSpecStr - the result of the conversion called before
+ **/
 TZINFO.loadData(group)
 
+/**
+ * This will set the converted timezone in POSIX format in the system configuration
+ * internal function
+ * Parameter: String tzSpecStr - the result of the conversion called before
+ **/
 TZINFO.convertOlsonToPosix(name, doConf, doForce)
 
 /**
