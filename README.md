@@ -1,6 +1,6 @@
 # Timezones
 Timezone related functions to get the correct settings of the tzData used by Mongoose-OS.
-Inspred and based on a Blog posting from Pavel Gurenko ["Getting POSIX TZ strings from Olson tzdata"](http://www.pavelgurenko.com/2017/05/getting-posix-tz-strings-from-olson.html)
+Inspired and based on a blog posting from Pavel Gurenko ["Getting POSIX TZ strings from Olson tzdata"](http://www.pavelgurenko.com/2017/05/getting-posix-tz-strings-from-olson.html)
 
 This is mostly an MJS based library.
 
@@ -17,6 +17,8 @@ TZINFO.moveData('/mnt');
 // Convert your wished timezone to the POSIX format used by Mongoose-OS
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
+
+** input 'Europe/Berlin' will result in 'CET-1CEST,M3.5.0,M10.5.0/3' **
 ```
 
 ## Description:
