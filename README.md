@@ -4,10 +4,11 @@ Inspired and based on a blog posting from Pavel Gurenko ["Getting POSIX TZ strin
 
 This is mostly an MJS based library.
 
+**input 'Europe/Berlin' will result in 'CET-1CEST,M3.5.0,M10.5.0/3'**
+
 # Usage:
 
 - Example:
-
 ```JAVASCRIPT
 load('api_timezones.js');
 
@@ -18,7 +19,6 @@ TZINFO.moveData('/mnt');
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ```
-** input 'Europe/Berlin' will result in 'CET-1CEST,M3.5.0,M10.5.0/3' **
 ## Description:
 
 - this is the object you may use
