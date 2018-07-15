@@ -48,10 +48,11 @@ TZINFO._dataFiles: {
 ### The methods:
 
 * Helper function which gets the full filename build from the filesystem and the group.
+
 Parameter:
-string path - the path (aka filesystem) where the data is/will be located
-string name - the group name describing the first level (mostly continent) of the timezone
-Returns the filename as string
+	* string path - the path (aka filesystem) where the data is/will be located
+	* string name - the group name describing the first level (mostly continent) of the timezone
+	* Returns the filename as string
 ```JAVASCRIPT
 TZINFO.getFileName(path, name)
 ```	
