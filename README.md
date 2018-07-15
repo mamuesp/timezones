@@ -46,52 +46,54 @@ TZINFO._dataFiles: {
 },
 ```
 ### The methods:
-
+```javascript
+TZINFO.convertOlsonToPosix(name, doConf, doForce)
+```	
+* Main method: gets the POSIX timezone code from an Olson named timezone (e.g. 'Europe/Dublin')
+1. Parameter:
+	* string name - the name of the timezone (e.g. 'Europe/Dublin')
+	* boolean doCOnf - if true, teh successful loaded POSIX code will be written to the system configuration, key: "sys.tz_spec"
+	* boolean doForce - overwrite the POSIX timezone code even if it already exists (not yet implemented)
+2. Return value
+	* the successfully retrieved POSIX timecode, 'UTC0' on failure
 ```javascript
 TZINFO.getFileName(path, name)
 ```	
-* Helper function which gets the full filename build from the filesystem and the group.
+* Helper method: which gets the full filename set together from the filesystem and the group name.
 1. Parameter:
 	* string path - the path (aka filesystem) where the data is/will be located
 	* string name - the group name describing the first level (mostly continent) of the timezone
 2. Return value
 	* the filename as string
 ```javascript
-TZINFO.moveData(target, doForce)```	
+TZINFO.moveData(target, doForce)
+```	
 * Moves all datafiles defined in the _dataFiles object (which are coming along with the library) to another filesystem.
 1. Parameter:
 	* string target - name of the filesystem holding the data after the call (must be mounted)
-	* boolean doForce - if true, the data will be moved even if it exists already in the target filesystem
+	* boolean doForce - if true, the data will be moved even if it exists already in the target filesystem (not yet implemented)
 2. Return value
 	* if successfully moved, the result is boolean true, false if not
 ```javascript
 TZINFO.moveFile(srcName, target)
 ```	
-* Helper function moves one single file to the target.
+* Helper method: moves one data file to the target
 1. Parameter:
-	* string srcName - the group of teh data file to move (mostly continent name)
+	* string srcName - the group of the data file to move (mostly continent name)
 	* string target - name of the filesystem holding the data after the call (must be mounted)
 2. Return value
-	* the target filename as string id successfull, else an empty string
-		
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
+	* the target filename as string id successful, else an empty string
+```javascript
 TZINFO.loadData(group)
-
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
-TZINFO.convertOlsonToPosix(name, doConf, doForce)
-
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
+```	
+* Helper method: set the converted timezone in POSIX format in the system configuration
+1. Parameter: String tzSpecStr - the result of the conversion (POSIX timezone code) called before
+2. Return value
+	* none
+```javascript
 TZINFO.setTimeZoneInConf(tzSpecStr)
-```
+```	
+### ToDo:
+* implement some functions in C
+* implement a function which will retrieve the timezone from coordinates (longitude, latitude)
+* implement a function which will get the timezone from a full address (e.g. via GoogleAPI)
