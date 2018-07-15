@@ -1,22 +1,26 @@
-author: mongoose-os
-type: lib
-description: Collection of libraries for demos
+author: mamuesp
+description: Timezone related functions
 version: 1.0
+platform: esp32
 libs_version: ${mos.version}
 modules_version: ${mos.version}
 mongoose_os_version: ${mos.version}
 
+config_schema:
+  - ["timezone", "o", {title: "Timezone info settings"}]
+  - ["timezone.is_set", "b", false, {title: "Timetone already set? If true, you have to force a reload"}]
+  - ["timezone.data_path", "s", "", {title: "Timetone space where time zone data is stored"}]
+
 sources:
   - src
 
-includes:
-  - include
-
 tags:
   - c
-  - demo
+  - js
 
 libs:
-  - origin: https://github.com/mamuesp/i2c
-
+  - origin: https://github.com/mongoose-os-libs/core
+  - origin: https://github.com/mongoose-os-libs/miniz
+  
 manifest_version: 2017-09-29
+platforms: [ esp32 ]
