@@ -6,6 +6,8 @@ This is mostly an MJS based library.
 
 # Usage:
 
+- Example:
+
 ```JAVASCRIPT
 load('api_timezones.js');
 
@@ -15,7 +17,11 @@ TZINFO.moveData('/mnt');
 // Convert your wished timezone to the POSIX format used by Mongoose-OS
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
+```
 
+- Description:
+
+```JAVASCRIPT
 // this is the object you may use
 TZINFO = {...};
 
