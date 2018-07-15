@@ -41,12 +41,9 @@ TZINFO.loadData(group)
 TZINFO.convertOlsonToPosix(name, doConf, doForce)
 
 /**
- *	This will set the converted timezone in POSIX format in the system configuration
- *
+ * This will set the converted timezone in POSIX format in the system configuration
  * internal function
- * 
  * Parameter: String tzSpecStr - the result of the conversion called before
- *
  **/
 TZINFO.setTimeZoneInConf(tzSpecStr)
 ```
