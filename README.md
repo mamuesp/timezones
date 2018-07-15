@@ -25,7 +25,7 @@ let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ```JAVASCRIPT
 TZINFO = {...};
 ```
-- some internal variables:
+# # # some internal variables:
 
 - _dataPath contains the filesystem where the timezone data is stored, if it si an empty string, the defsault filesystem ist used, if not, it contains the additional filesystem to use
 ```JAVASCRIPT
