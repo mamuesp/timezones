@@ -1,10 +1,10 @@
-# timezones
+# Timezones
 Timezone related functions to get the correct settings of the tzData used by Mongoose-OS.
-Base on a Blog posting from Pavel Gurenko ["Getting POSIX TZ strings from Olson tzdata"](http://www.pavelgurenko.com/2017/05/getting-posix-tz-strings-from-olson.html)
+Inspred and based on a Blog posting from Pavel Gurenko ["Getting POSIX TZ strings from Olson tzdata"](http://www.pavelgurenko.com/2017/05/getting-posix-tz-strings-from-olson.html)
 
 This is mostly an MJS based library.
 
-#Usage:
+# Usage:
 
 ```JAVASCRIPT
 load('api_timezones.js');
