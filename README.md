@@ -25,7 +25,8 @@ let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 // this is the object you may use
 TZINFO = {...};
 
-// some internals variables:
+- some internal variable:
+
 // _dataPath contains the filesystem where the timezone data is stored,
 // if it si an empty string, the defsault filesystem ist used, if not,
 // it contains the additional filesystem to use
