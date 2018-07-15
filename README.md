@@ -19,18 +19,18 @@ TZINFO.moveData('/mnt');
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ```
 
-- Description:
+## Description:
 
+- this is the object you may use
 ```JAVASCRIPT
-// this is the object you may use
 TZINFO = {...};
+```
+- some internal variables:
 
-- some internal variable:
-
-// _dataPath contains the filesystem where the timezone data is stored,
-// if it si an empty string, the defsault filesystem ist used, if not,
-// it contains the additional filesystem to use
+- _dataPath contains the filesystem where the timezone data is stored, if it si an empty string, the defsault filesystem ist used, if not, it contains the additional filesystem to use
+```JAVASCRIPT
 TZINFO._dataPath: Cfg.get('timezone.data_path'),
+```
 
 // _dataGroups shows the names of the grouping of the data, mostly the
 // The data is splitted into multiple files to save time when loading them
