@@ -15,7 +15,6 @@ TZINFO.moveData('/mnt');
 // Convert your wished timezone to the POSIX format used by Mongoose-OS
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
-```
 
 TZINFO = {...};
 
@@ -50,3 +49,4 @@ TZINFO.convertOlsonToPosix(name, doConf, doForce)
  *
  **/
 TZINFO.setTimeZoneInConf(tzSpecStr)
+```
