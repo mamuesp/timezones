@@ -27,18 +27,16 @@ TZINFO = {...};
 ```
 ### Internal variables:
 
-- _dataPath contains the filesystem where the timezone data is stored, if it si an empty string, the defsault filesystem ist used, if not, it contains the additional filesystem to use
-```JAVASCRIPT
-TZINFO._dataPath: Cfg.get('timezone.data_path'),
+* _dataPath contains the filesystem where the timezone data is stored, if it si an empty string, the defsault filesystem ist used, if not, it contains the additional filesystem to use
+```javascript
+TZINFO._dataPath: Cfg.get('timezone.data_path')
 ```
-
-// _dataGroups shows the names of the grouping of the data, mostly the
-// The data is splitted into multiple files to save time when loading them
-// because of the wished timezone its clear, where to look and so only the
-// needed data is loaded.
+* _dataGroups shows the names of the grouping of the data, mostly th names of the continents. The data is splitted into multiple files to save time when loading them. As the wished timezone is knoen before loading, it is clear in whicth group to look and so only the needed data is loaded.
+```JAVASCRIPT
 TZINFO._dataGroups: ["Africa", "America", "Asia", "Europe", "Others"],
-
-// _dataFiles holds the filenames of the stored timezone data
+```
+* _dataFiles is an object which holds the filenames of the stored timezone data
+```JAVASCRIPT
 TZINFO._dataFiles: {
   Africa: 'africa-tz.min.json',
   America: 'america-tz.min.json',
@@ -46,14 +44,17 @@ TZINFO._dataFiles: {
   Europe: 'europe-tz.min.json',
   Others: 'others-tz.min.json'
 },
-	
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
+```
+### The methods:
+
+* Helper function which gets the full filename build from the filesystem and the group.
+Parameter:
+string path - the path (aka filesystem) where the data is/will be located
+string name - the group name describing the first level (mostly continent) of the timezone
+Returns the filename as string
+```JAVASCRIPT
 TZINFO.getFileName(path, name)
-	
+```	
 /**
  * This will set the converted timezone in POSIX format in the system configuration
  * internal function
