@@ -22,7 +22,7 @@ let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ## Description:
 
 - this is the object you may use
-```JAVASCRIPT
+```javascript
 TZINFO = {...};
 ```
 ### Internal variables:
@@ -32,11 +32,11 @@ TZINFO = {...};
 TZINFO._dataPath: Cfg.get('timezone.data_path')
 ```
 * _dataGroups shows the names of the grouping of the data, mostly th names of the continents. The data is splitted into multiple files to save time when loading them. As the wished timezone is knoen before loading, it is clear in whicth group to look and so only the needed data is loaded.
-```JAVASCRIPT
+```javascript
 TZINFO._dataGroups: ["Africa", "America", "Asia", "Europe", "Others"],
 ```
 * _dataFiles is an object which holds the filenames of the stored timezone data
-```JAVASCRIPT
+```javascript
 TZINFO._dataFiles: {
   Africa: 'africa-tz.min.json',
   America: 'america-tz.min.json',
@@ -47,29 +47,34 @@ TZINFO._dataFiles: {
 ```
 ### The methods:
 
+```javascript
+TZINFO.getFileName(path, name)
+```	
 * Helper function which gets the full filename build from the filesystem and the group.
 1. Parameter:
 	* string path - the path (aka filesystem) where the data is/will be located
 	* string name - the group name describing the first level (mostly continent) of the timezone
-2. Returnvalue
+2. Return value
 	* the filename as string
-```JAVASCRIPT
-TZINFO.getFileName(path, name)
-```	
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
+```javascript
 TZINFO.moveData(target, doForce)
-
-/**
- * This will set the converted timezone in POSIX format in the system configuration
- * internal function
- * Parameter: String tzSpecStr - the result of the conversion called before
- **/
+```	
+* Moves all datafiles defined in the _dataFiles object, whic are coming with the library to another filesystem.
+1. Parameter:
+	* string target - name of the filesystem holding the data after the call (must be mounted)
+	* boolean doForce - if true, the data will be moved even if it exists already in the target filesystem
+2. Return value
+	* if successfully moved, the result is boolean true, false if not
+```javascript
 TZINFO.moveFile(srcName, target)
-	
+```	
+* Helper function moves one single file to the target.
+1. Parameter:
+	* string srcName - the group of teh data file to move (mostly continent name)
+	* string target - name of the filesystem holding the data after the call (must be mounted)
+2. Return value
+	* the target filename as string id successfull, else an empty string
+		
 /**
  * This will set the converted timezone in POSIX format in the system configuration
  * internal function
