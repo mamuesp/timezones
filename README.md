@@ -21,7 +21,7 @@ let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ```
 ## Description:
 
-- this is the object you may use
+- this is the object you may use when the library is integrated in the `mos.yml` file of you project:
 ```javascript
 TZINFO = {...};
 ```
