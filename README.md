@@ -57,9 +57,8 @@ TZINFO.getFileName(path, name)
 2. Return value
 	* the filename as string
 ```javascript
-TZINFO.moveData(target, doForce)
-```	
-* Moves all datafiles defined in the _dataFiles object, whic are coming with the library to another filesystem.
+TZINFO.moveData(target, doForce)```	
+* Moves all datafiles defined in the _dataFiles object (which are coming along with the library) to another filesystem.
 1. Parameter:
 	* string target - name of the filesystem holding the data after the call (must be mounted)
 	* boolean doForce - if true, the data will be moved even if it exists already in the target filesystem
