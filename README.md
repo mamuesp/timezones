@@ -4,7 +4,7 @@ Base on a Blog posting from Pavel Gurenko ["Getting POSIX TZ strings from Olson 
 
 This is mostly an MJS based library.
 
-Usage:
+#Usage:
 
 ```JAVASCRIPT
 load('api_timezones.js');
@@ -13,7 +13,7 @@ load('api_timezones.js');
 TZINFO.moveData('/mnt');
 
 // Convert your wished timezone to the POSIX format used by Mongoose-OS
-// and write it dreictly to the system configuration
+// and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
 ```
 
