@@ -17,10 +17,8 @@ TZINFO.moveData('/mnt');
 // Convert your wished timezone to the POSIX format used by Mongoose-OS
 // and write it directly to the system configuration
 let tzSpec = TZINFO.convertOlsonToPosix('Europe/Dublin', true);
-
-** input 'Europe/Berlin' will result in 'CET-1CEST,M3.5.0,M10.5.0/3' **
 ```
-
+** input 'Europe/Berlin' will result in 'CET-1CEST,M3.5.0,M10.5.0/3' **
 ## Description:
 
 - this is the object you may use
