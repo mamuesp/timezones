@@ -95,5 +95,6 @@ TZINFO.setTimeZoneInConf(tzSpecStr)
 ```	
 ### ToDo:
 * implement some functions in C
+* make it transparent (enter Olson timezone in mos.yml and the setting will be tranformed and stored when initializing)
 * implement a function which will retrieve the timezone from coordinates (longitude, latitude)
 * implement a function which will get the timezone from a full address (e.g. via GoogleAPI)
