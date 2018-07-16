@@ -25,8 +25,12 @@
  **/ 
 load('api_config.js');
 
+let logHead = 'Timezones: ';
+
 let TZINFO = {
 
+	_getZippedData: ffi('char *mgos_get_zipped_tz_data(char *)'),
+	_freeZippedData: ffi('void mgos_free_zipped_tz_data(char *)'),
 	_dataPath: Cfg.get('timezone.data_path'),
 	_dataGroups: ["Africa", "America", "Asia", "Europe", "Others"],
 	_dataFiles: {
@@ -36,7 +40,25 @@ let TZINFO = {
 		Europe: 'europe-tz.min.json',
 		Others: 'others-tz.min.json'
 	},
-	
+	_splitString: function(inTxt, sepChr) {
+		let buff = '';
+		let out = [];
+		for (let i = 0; i < inTxt.length; i++) {
+			if (inTxt[i] !== sepChr) {
+				buff = buff + inTxt[i];
+			} else {
+				if (buff.length > 0) {
+					out.push(buff);
+					buff = '';
+				}
+			}
+		}
+		if (buff.length > 0) {
+			out.push(buff);
+		}
+		return out;
+	},
+  
 	getFileName: function(path, name) {
 		if (path.length === 0) {
 			return name;			
@@ -105,38 +127,62 @@ let TZINFO = {
 	},
 	
 	loadData: function(group) {
-		let file = this.getFileName(this._dataPath, this._dataFiles[group]); 
-		let strJSON = File.read(file);
+		let doZip =	Cfg.get('timezone.zipped_data');
+		let strJSON = '';
+		if (doZip) {
+			let file = this._dataFiles[group];
+			let data = this._getZippedData(file);
+			strJSON = mkstr(data, 0, data.length, true);
+			this._freeZippedData(data);
+		} else {
+			let file = this.getFileName(this._dataPath, this._dataFiles[group]); 
+			strJSON = File.read(file);
+		}
 		let oJSON = {};
 		Log.debug(logHead + 'Timezone JSON file read!');
 		if (strJSON !== null && strJSON.length > 0) {
 			oJSON = JSON.parse(strJSON);
 			Log.debug(logHead + 'JSON Status data read successfully!');
 		}
+		
+		if (doZip) {
+			this._freeZippedData(strJSON);
+		}
+		
 		return oJSON;
 	},
 
-	convertOlsonToPosix: function (name, doConf, doForce) {
-		let parts = TOOLS.splitString(name, '/');
+	getGroup: function(name) {
+		let parts = this._splitString(name, '/');
 		let group = 'Others';
 		if (parts.length > 0) {
+			// check if group is listed in _dataFiles
 			if (this._dataFiles[parts[0]]) {
 				group = parts[0];
 			}
 		}
-		
+		return group;
+	},
+
+	getTzSpec: function(tzData, name, doConf, doForce) {
+		let tzSpec = tzData[name];
+		// don't beed the data anymore ...
+		tzData = null;
+		if (doConf) {
+			this.setTimeZoneInConf(tzSpec);
+		}
+		gc(true);
+		Log.info('Timezone settings for <' + name + '>: ' + tzSpec);
+		return tzSpec;
+	},
+	
+	convertOlsonToPosix: function (name, doConf, doForce) {
+		let group = this.getGroup(name);
 		let tzData = this.loadData(group);
 		if (tzData) {
-			let tzSpec = tzData[name];
-			tzData = null;
-			if (doConf) {
-				this.setTimeZoneInConf(tzSpec);
-			}
-			gc(true);
-			Log.info('Timezone settings for <' + name + '>: ' + tzSpec);
-			return tzSpec;
+			this.getTzSpec(tzData, name, doConf, doForce);
 		} else {
-			Log.error('Timezone: ' + name + ' not found in database!');
+			Log.error('Timezone group <' + name + '> not found in database!');
 			return 'UTC0';
 		}
 	},

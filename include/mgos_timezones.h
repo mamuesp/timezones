@@ -23,8 +23,13 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * 
  **/ 
-#include <stdbool.h>
+#ifndef __MGOS_TIMEZONES_H
+#define __MGOS_TIMEZONES_H
 
-bool mgos_timezones_init(void) {
-  return true;
-}
+#include <stdbool.h>
+#include "mgos.h"
+#include "mgos_app.h"
+#include "mgos_config.h"
+#include "miniz.h"
+
+#endif

@@ -8,11 +8,17 @@ mongoose_os_version: ${mos.version}
 
 config_schema:
   - ["timezone", "o", {title: "Timezone info settings"}]
-  - ["timezone.is_set", "b", false, {title: "Timetone already set? If true, you have to force a reload"}]
-  - ["timezone.data_path", "s", "", {title: "Timetone space where time zone data is stored"}]
+  - ["timezone.is_set", "b", false, {title: "Timezone already set? If true, you have to force a reload"}]
+  - ["timezone.data_path", "s", "", {title: "Timezone space where time zone data is stored"}]
+  - ["timezone.olson", "s", "Europe/Berlin", {title: "Current timezone in Olson notation"}]
+  - ["timezone.init", "b", true, {title: "Set timezone when initializing the library"}]
+  - ["timezone.zipped_data", "b", false, {title: "Use the zipped tzdata archive"}]
 
 sources:
   - src
+
+includes:
+  - include
 
 tags:
   - c
