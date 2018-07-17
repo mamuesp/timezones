@@ -10,9 +10,15 @@ config_schema:
   - ["timezone", "o", {title: "Timezone info settings"}]
   - ["timezone.is_set", "b", false, {title: "Timezone already set? If true, you have to force a reload"}]
   - ["timezone.data_path", "s", "", {title: "Timezone space where time zone data is stored"}]
-  - ["timezone.olson", "s", "Europe/Berlin", {title: "Current timezone in Olson notation"}]
+  - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
   - ["timezone.init", "b", true, {title: "Set timezone when initializing the library"}]
-  - ["timezone.zipped_data", "b", false, {title: "Use the zipped tzdata archive"}]
+  - ["timezone.zipped_data", "b", true, {title: "Use the zipped tzdata archive"}]
+  - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
+  - ["timezone.delte_unused", "b", true, {title: "If true, the unused files (ZIP or plain) will be deleted to save space"}]
+
+cdefs:
+  # Miniz is hungry for stack.
+  MGOS_TASK_STACK_SIZE_BYTES: 16384
 
 sources:
   - src
@@ -27,6 +33,6 @@ tags:
 libs:
   - origin: https://github.com/mongoose-os-libs/core
   - origin: https://github.com/mongoose-os-libs/miniz
-  
+
 manifest_version: 2017-09-29
 platforms: [ esp32 ]
