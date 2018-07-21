@@ -19,11 +19,11 @@ You may enable/disable the library though it is loaded.
 ```YAML
   - ["timezone.data_path", "s", "/mnt", {title: "Timezone space where time zone data is stored"}]
 ```
-If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after new flashing of the firmware, after the action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
+If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after flashing a new version of the firmware. After this action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
 ```YAML
   - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
 ```
-This is the filename of the timezone data archive, should not be touched.
+This is the filename of the timezone data archive, **should not be touched**.
 ```YAML
   - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
 
