@@ -8,7 +8,6 @@ mongoose_os_version: ${mos.version}
 config_schema:
   - ["timezone", "o", {title: "Timezone info settings"}]
   - ["timezone.enable", "b", true, {title: "Set timezone when initializing the library"}]
-  - ["timezone.is_set", "b", false, {title: "Timezone already set? If true, you have to force a reload"}]
   - ["timezone.data_path", "s", "/mnt", {title: "Timezone space where time zone data is stored"}]
   - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
   - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
