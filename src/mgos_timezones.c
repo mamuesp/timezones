@@ -256,14 +256,15 @@ bool mgos_free_zipped_tz_data(void *buffer) {
 
 bool mgos_timezones_init(void) {
 
-  if (!mgos_sys_config_get_timezone_enable()) return;
+  if (!mgos_sys_config_get_timezone_enable()) {
+    return true;
+  }
   
   struct mbuf arch;
   const char *dataPath = mgos_sys_config_get_timezone_data_path();
   const char *archFile = mgos_sys_config_get_timezone_arch_file();
   const char *olson = mgos_sys_config_get_timezone_olson();
   const char *groupFile = mgos_get_data_filename(olson);
-  bool doFree = false;
   
   if (mgos_file_exists((char *) archFile) && strlen(dataPath) > 0) {
     mgos_file_move((char *) archFile, "", (char *) dataPath);
