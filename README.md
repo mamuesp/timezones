@@ -14,12 +14,12 @@ This is a library written in C which works in the background. Just add the lib, 
 ```YAML
   - ["timezone.enable", "b", true, {title: "Set timezone when initializing the library"}]
 ```
-You may disable the library though it is loaded.
+You may enable/disable the library though it is loaded.
 
 ```YAML
   - ["timezone.data_path", "s", "/mnt", {title: "Timezone space where time zone data is stored"}]
 ```
-If you have mounted an additional file system, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after new flashing of the firmware, after the action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
+If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after new flashing of the firmware, after the action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
 ```YAML
   - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
 ```
