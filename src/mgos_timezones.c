@@ -255,6 +255,9 @@ bool mgos_free_zipped_tz_data(void *buffer) {
 }
 
 bool mgos_timezones_init(void) {
+
+  if (!mgos_sys_config_get_timezone_enable()) return;
+  
   struct mbuf arch;
   const char *dataPath = mgos_sys_config_get_timezone_data_path();
   const char *archFile = mgos_sys_config_get_timezone_arch_file();
