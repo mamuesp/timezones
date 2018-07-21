@@ -32,6 +32,7 @@ Here you may enter the wished timezone in Olson notation you wish to be configur
 For example: if you enter `America/New_York`, the `sys.tz_spec` will be set to `EST5EDT,M3.2.0,M11.1.0`
 	
 ## 3. ToDo:
+* comment the source code
 * add update possibilities, because the timezone data changes from time to time
 * implement some functions in MJS for information purposes
 * implement a function which will retrieve the timezone from coordinates (longitude, latitude)
