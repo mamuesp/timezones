@@ -12,23 +12,23 @@ This is a library written in C which works in the background. Just add the lib, 
 
 ## 2. Adapt you settings:
 ```YAML
-  - ["timezone.enable", "b", true, {title: "Set timezone when initializing the library"}]
+  - ["timezone.enable", true]
 ```
 You may enable/disable the library though it is loaded.
 
 ```YAML
-  - ["timezone.data_path", "s", "/mnt", {title: "Timezone space where time zone data is stored"}]
+  - ["timezone.data_path", "/mnt"]
 ```
 If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after flashing a new version of the firmware. After this action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
 ```YAML
-  - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
+  - ["timezone.arch_file", "tz-archive.zip"]
 ```
 This is the filename of the timezone data archive, **should not be touched**.
 ```YAML
-  - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
+  - ["timezone.olson", "UTC0"]
 
 ```
-Here youl may enter the wished timezone in Olson notation you wish to be configured for your device.
+Here you may enter the wished timezone in Olson notation you wish to be configured for your device.
 For example: if you enter `America/New_York`, the `sys.tz_spec` will be set to `EST5EDT,M3.2.0,M11.1.0`
 	
 ## 3. ToDo:
