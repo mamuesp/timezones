@@ -48,6 +48,7 @@ uint16_t mgos_generate_api_url(char *buffer, uint16_t len) {
   const char *acc = mgos_sys_config_get_timezone_api_account();
   char *result;
 
+  // ToDO: this is a preliminary hack ...
   uint16_t urlLen = 400; //(uint16_t) strlen(base) + (uint16_t) strlen(key) + (uint16_t) strlen(acc);
   if (len < urlLen) {
     LOG(LL_ERROR, ("Provided buffer is too small: <%ld> vs. <%ld>!", (long) len, (long) urlLen));
@@ -67,35 +68,41 @@ uint16_t mgos_generate_api_url(char *buffer, uint16_t len) {
 char *mgos_get_zipped_tz_data(const char *archFile, const char *groupFile, bool doConf) {
 
 	char *result;
+  size_t zipSize = 0;
 
-	result = mgos_get_zipped_data(archFile, groupFile, NULL, 0);
+	result = mgos_get_zipped_data(archFile, groupFile, &zipSize, NULL, 0);
 	if (result) {
 		LOG(LL_DEBUG, ("ZIP file <%s> uncompressed", groupFile));
 		if (doConf) {
-      mgos_set_tzspec(result);
+      mgos_set_tzspec(result, zipSize);
 		}
     mz_free(result);
 	}
 	return result;
 }
 
-bool mgos_set_tzspec(char *tzdata) {
+bool mgos_set_tzspec(char *tzdata, size_t zipSize) {
     bool result = true;
     const char *key = mgos_sys_config_get_timezone_olson();
 
-    if (key && strlen(key) > 0 && strstr(key, tzdata)) {
+    if (key && strlen(key) > 0 && c_strnstr(tzdata, key, zipSize)) {
+      
       int len = strlen(key);
       char *buff;
       char *fmt = malloc(len + 7);
     
       sprintf(fmt, "{%s: %%Q}", key);
       LOG(LL_DEBUG, ("Format string for json_scanf: <%s> ...", fmt));
-      if (json_scanf(tzdata, strlen(tzdata), fmt, &buff) == 1) {
-        LOG(LL_INFO, ("Timezone result from JSON data: <%s> ...", buff));
+      if (json_scanf(tzdata, zipSize, fmt, &buff) == 1) {
+        char *err = NULL;
         mgos_sys_config_set_sys_tz_spec(buff);
+        save_cfg(&mgos_sys_config, &err);
+        LOG(LL_INFO, ("Saving configuration: <%s>", err ? err : "no error"));
+        LOG(LL_INFO, ("Timezone result for <%s> from JSON data: <%s> ...", key, buff));
+        free(err);
         free(buff);
       } else {
-        LOG(LL_ERROR, ("Timezone <%s> not found in database!", fmt));
+        LOG(LL_ERROR, ("Timezone <%s> not found in database!", key));
       }
       free(fmt);
     } else {

@@ -30,6 +30,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "mongoose.h"
 #include "mgos.h"
 #include "mgos_app.h"
 #include "mgos_config.h"
@@ -47,7 +48,7 @@ uint16_t mgos_generate_api_url(char *buffer, uint16_t len);
 
 char *mgos_get_zipped_tz_data(const char *archFile, const char *groupFile, bool doConf);
 
-bool mgos_set_tzspec(char *tzdata);
+bool mgos_set_tzspec(char *tzdata, size_t zipSize);
 
 bool mgos_timezones_init(void);
 
