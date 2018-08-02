@@ -83,17 +83,24 @@ bool mgos_set_tzspec(char *tzdata) {
     bool result = true;
     const char *key = mgos_sys_config_get_timezone_olson();
     int   len = strlen(key);
-    char *buff;
-    char *fmt = malloc(len + 7);
 
-    sprintf(fmt, "{%s: %%Q}", key);
-    LOG(LL_DEBUG, ("Format string for json_scanf: <%s> ...", fmt));
-    json_scanf(tzdata, strlen(tzdata), fmt, &buff);
-    LOG(LL_INFO, ("Result from json_scanf: <%s> ...", buff));
-    mgos_sys_config_set_sys_tz_spec(buff);
-
-    free(fmt);
-    free(buff);
+    if (strstr(key, tzdata)) {
+      char *buff;
+      char *fmt = malloc(len + 7);
+    
+      sprintf(fmt, "{%s: %%Q}", key);
+      LOG(LL_DEBUG, ("Format string for json_scanf: <%s> ...", fmt));
+      if (json_scanf(tzdata, strlen(tzdata), fmt, &buff) == 1) {
+        LOG(LL_INFO, ("Timezone result from JSON data: <%s> ...", buff));
+        mgos_sys_config_set_sys_tz_spec(buff);
+        free(buff);
+      } else {
+        LOG(LL_ERROR, ("Timezone <%s> not found in database!", fmt));
+      }
+      free(fmt);
+    } else {
+      LOG(LL_ERROR, ("Timezone <%s> not found in database!", key));
+    }
 
     return result;
 }

@@ -10,13 +10,13 @@ config_schema:
   - ["timezone.enable", "b", true, {title: "Set timezone when initializing the library"}]
   - ["timezone.data_path", "s", "", {title: "Timezone space where time zone data is stored"}]
   - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
-  - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
+  - ["timezone.olson", "s", "Etc/UTC", {title: "Current timezone in Olson notation"}]
 # will be activated in a later version
-  - ["timezone.latitude", "d", 53.66318, {title: "Timezone coordinates latitude"}]
-  - ["timezone.longitude", "d", 7.90991, {title: "Timezone coordinates longitude"}]
-  - ["timezone.api_account", "s", "1976", {title: "The API account ID to retreive TZ infos from a location"}]
+  - ["timezone.latitude", "d", 0.0, {title: "Timezone coordinates latitude"}]
+  - ["timezone.longitude", "d", 0.0, {title: "Timezone coordinates longitude"}]
+  - ["timezone.api_account", "s", "", {title: "The API account ID to retreive TZ infos from a location"}]
   - ["timezone.api_url", "s", "https://api.askgeo.com/v1/%s/%s/query.json?points=%f,%f&databases=TimeZone", {title: "The API URL to retreive TZ infos from a location"}]
-  - ["timezone.api_key", "s", "eb4f73f23f889de246b8c882449ca605797256b5ac7218e3a4f7147dac3b82b1", {title: "The API key to retreive TZ infos from a location"}]
+  - ["timezone.api_key", "s", "", {title: "The API key to retrieve TZ infos from a location"}]
 
 sources:
   - src
