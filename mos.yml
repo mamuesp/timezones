@@ -8,7 +8,7 @@ mongoose_os_version: ${mos.version}
 config_schema:
   - ["timezone", "o", {title: "Timezone info settings"}]
   - ["timezone.enable", "b", true, {title: "Set timezone when initializing the library"}]
-  - ["timezone.data_path", "s", "/mnt", {title: "Timezone space where time zone data is stored"}]
+  - ["timezone.data_path", "s", "", {title: "Timezone space where time zone data is stored"}]
   - ["timezone.arch_file", "s", "tz-archive.zip", {title: "The ZIP file containing the data"}]
   - ["timezone.olson", "s", "UTC0", {title: "Current timezone in Olson notation"}]
 # will be activated in a later version
@@ -17,10 +17,6 @@ config_schema:
   - ["timezone.api_account", "s", "1976", {title: "The API account ID to retreive TZ infos from a location"}]
   - ["timezone.api_url", "s", "https://api.askgeo.com/v1/%s/%s/query.json?points=%f,%f&databases=TimeZone", {title: "The API URL to retreive TZ infos from a location"}]
   - ["timezone.api_key", "s", "eb4f73f23f889de246b8c882449ca605797256b5ac7218e3a4f7147dac3b82b1", {title: "The API key to retreive TZ infos from a location"}]
-
-cdefs:
-  # Miniz is hungry for stack.
-  MGOS_TASK_STACK_SIZE_BYTES: 16384
 
 sources:
   - src
@@ -35,7 +31,6 @@ tags:
   - c
 
 libs:
-  - origin: https://github.com/mongoose-os-libs/core
-  - origin: https://github.com/mongoose-os-libs/miniz
+  - origin: /Volumes/FastSSD/Develop/HeyDo/heydo-mqtt/Mongoose-OS/libs/swiss-army-knife
 
 manifest_version: 2017-09-29

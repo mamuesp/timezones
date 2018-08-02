@@ -26,74 +26,6 @@
 
 #include "mgos_timezones.h"
     
-bool mgos_file_exists(char *file) {
-  FILE *test = fopen(file, "rb");
-  bool isExisting = (test != NULL);
-  
-  if (isExisting) {
-    fclose(test);
-  }
-
-  return isExisting;
-}
-
-size_t mgos_create_filepath(struct mbuf *res, char *path, char *file) {
-  uint8_t end = 0;
-
-  mbuf_init(res, strlen(path) + strlen(file) + 2);
-  if (strlen(path) > 0) {
-    mbuf_append(res, path, strlen(path));
-    mbuf_append(res, "/", 1);
-  }
-  mbuf_append(res, file, strlen(file));
-  mbuf_append(res, &end, 1);
-  mbuf_trim(res);
-  return res->len;
-}
-
-bool mgos_file_move(char *file, char *source, char* target) {
-  struct mbuf src;
-  struct mbuf tgt;
-  size_t pos = 0;
-  uint8_t ch;
-
-  mgos_create_filepath(&src, source, file);
-  mgos_create_filepath(&tgt, target, file);
-
-  if (strcmp(src.buf, tgt.buf) == 0) {
-    return true;
-  }
-  
-  FILE* in = fopen(src.buf, "rb");
-  FILE* out = fopen(tgt.buf, "wb");
-  if(in == NULL || out == NULL) {
-    LOG(LL_ERROR, ("mgos_file_move: error opening files! <%s> - <%s>", src.buf, tgt.buf));
-    in = out = 0;
-    return false;
-  }
-
-  fseek(in, 0L, SEEK_END); // file pointer at end of file
-  pos = ftell(in);
-  fseek(in, 0L, SEEK_SET); // file pointer set at start
-  while (pos--) {
-    ch = fgetc(in);  // copying file character by character
-    fputc(ch, out);
-  }    
-
-  fclose(out);
-  fclose(in);
-  
-  if(remove(src.buf) < 0) {
-    LOG(LL_ERROR, ("mgos_file_move: error deleting file! <%s>", src.buf));
-    return false;
-  }
-
-  mbuf_free(&src);
-  mbuf_free(&tgt);
-
-  return true;
-}
-
 char *mgos_get_data_filename(const char *olson) {
   if (strstr(olson, "Africa") != NULL) {
     return MGOS_TIMEZONES_GROUP_AFRICA;
@@ -132,126 +64,38 @@ uint16_t mgos_generate_api_url(char *buffer, uint16_t len) {
   return strlen(buffer);
 }
 
-bool mgos_init_archive(const char *archFile, mz_zip_archive *zipArch) {
-	mz_bool status;
-	// init the structure
-	mz_zip_zero_struct(zipArch);
-	status = mz_zip_reader_init_file(zipArch, archFile, 0);
-	if (!status) {
-		LOG(LL_ERROR, ("ZIP file <%s> appears invalid/not loadable!", archFile));
-		return false;
-	}
-	return true;
-}
-
-bool mgos_exit_archive(mz_zip_archive *zipArch) {
-  LOG(LL_DEBUG, ("ZIP reader end."));
-	mz_zip_reader_end(zipArch);
-  return true;
-}
-
-uint16_t mgos_get_zipped_buffer_size(char *archFile, char *groupFile) {
-
-  mz_zip_archive zipArch;
-	mz_zip_archive_file_stat zipFileStat;
-	mz_uint32 zipIdx;
-	mz_bool zipFile;
-	uint16_t result;
-	char *comment = NULL;
-	long archSize = 0;
-
-	result = 0;
-
-	if (!mgos_init_archive(archFile, &zipArch)) {
-		return result;
-	}
-
-	LOG(LL_DEBUG, ("Check ZIP file <%s> ...", groupFile));
-	archSize = zipArch.m_archive_size;
-	if (archSize > 0) {
-		LOG(LL_DEBUG, ("ZIP file checked, archive size <%ld> ...", (long) archSize));
-		zipFile = mz_zip_reader_locate_file_v2(&zipArch, groupFile, comment, MZ_ZIP_FLAG_IGNORE_PATH, &zipIdx);
-		if (zipFile == MZ_TRUE) {
-			LOG(LL_DEBUG, ("ZIP file found, index is <%d> ...", zipIdx));
-			if (mz_zip_reader_file_stat(&zipArch, zipIdx, &zipFileStat)) {
-				result = (uint16_t) zipFileStat.m_uncomp_size;
-			}
-		}
-	}
-
-  LOG(LL_DEBUG, ("ZIP reader end."));
-	mz_zip_reader_end(&zipArch);
-
-	return result;
-}
-
 char *mgos_get_zipped_tz_data(const char *archFile, const char *groupFile, bool doConf) {
 
-	mz_zip_archive zipArch;
-	mz_zip_archive_file_stat zipFileStat;
-	mz_uint32 zipIdx;
-	mz_bool zipFile;
 	char *result;
-	char *comment = NULL;
-	size_t zipSize = 0;
-	long archSize = 0;
 
-	result = NULL;
-	if (!mgos_init_archive(archFile, &zipArch)) {
-		return result;
-	}
-
-	LOG(LL_DEBUG, ("Check ZIP file <%s> ...", groupFile));
-	archSize = zipArch.m_archive_size;
-	if (archSize <= 0) {
-		return result;
-	}
-
-	LOG(LL_DEBUG, ("ZIP file checked, archive size <%ld> ...", (long) archSize));
-	zipFile = mz_zip_reader_locate_file_v2(&zipArch, groupFile, comment, MZ_ZIP_FLAG_IGNORE_PATH, &zipIdx);
-	if (zipFile == MZ_FALSE) {
-		return result;
-	}
-
-	LOG(LL_DEBUG, ("ZIP file found, index is <%d> ...", zipIdx));
-	if (mz_zip_reader_file_stat(&zipArch, zipIdx, &zipFileStat)) {
-		zipSize = zipFileStat.m_uncomp_size;
-		LOG(LL_DEBUG, ("ZIP file <%s> checked, unzipped size <%ld> ...", groupFile, (long) zipSize));
-		result = mz_zip_reader_extract_to_heap(&zipArch, zipIdx, &zipSize, 0);
-		if (result) {
-			LOG(LL_DEBUG, ("ZIP file <%s> uncompressed (%ld bytes)", groupFile, (long) zipSize));
-			if (doConf) {
-	      mgos_set_tzspec(result);
-			}
-      mz_free(result);
+	result = mgos_get_zipped_data(archFile, groupFile, NULL, 0);
+	if (result) {
+		LOG(LL_DEBUG, ("ZIP file <%s> uncompressed", groupFile));
+		if (doConf) {
+      mgos_set_tzspec(result);
 		}
+    mz_free(result);
 	}
-
-	mgos_exit_archive(&zipArch);
 	return result;
 }
 
-char *mgos_set_tzspec(char *tzdata) {
+bool mgos_set_tzspec(char *tzdata) {
+    bool result = true;
     const char *key = mgos_sys_config_get_timezone_olson();
     int   len = strlen(key);
-    char *result;
+    char *buff;
     char *fmt = malloc(len + 7);
 
     sprintf(fmt, "{%s: %%Q}", key);
-    LOG(LL_ERROR, ("Format string for json_scanf: <%s> ...", fmt));
-    json_scanf(tzdata, strlen(tzdata), fmt, &result);
-    LOG(LL_ERROR, ("Result from json_scanf: <%s> ...", result));
-    mgos_sys_config_set_sys_tz_spec(result);
+    LOG(LL_DEBUG, ("Format string for json_scanf: <%s> ...", fmt));
+    json_scanf(tzdata, strlen(tzdata), fmt, &buff);
+    LOG(LL_INFO, ("Result from json_scanf: <%s> ...", buff));
+    mgos_sys_config_set_sys_tz_spec(buff);
 
     free(fmt);
-    free(result);
+    free(buff);
 
     return result;
-}
-
-bool mgos_free_zipped_tz_data(void *buffer) {
-	mz_free(buffer);
-	return true;
 }
 
 bool mgos_timezones_init(void) {
@@ -262,15 +106,23 @@ bool mgos_timezones_init(void) {
   
   struct mbuf arch;
   const char *dataPath = mgos_sys_config_get_timezone_data_path();
+  dataPath = (dataPath == NULL) ? "" : dataPath;
+  LOG(LL_DEBUG, ("Timezone init - dataPath: <%s>", (char *) dataPath));
   const char *archFile = mgos_sys_config_get_timezone_arch_file();
+  LOG(LL_DEBUG, ("Timezone init - archFile: <%s>", (char *) archFile));
   const char *olson = mgos_sys_config_get_timezone_olson();
+  LOG(LL_DEBUG, ("Timezone init - olson: <%s>", (char *) olson));
   const char *groupFile = mgos_get_data_filename(olson);
+  LOG(LL_DEBUG, ("Timezone init - groupFile: <%s>", (char *) groupFile));
   
   if (mgos_file_exists((char *) archFile) && strlen(dataPath) > 0) {
+    LOG(LL_DEBUG, ("Moving <%s> to <%s> ...", (char *) archFile, (char *) dataPath));
     mgos_file_move((char *) archFile, "", (char *) dataPath);
   }
   mgos_create_filepath(&arch, (char *) dataPath, (char *) archFile);
+  LOG(LL_DEBUG, ("Try to open ZIP file <%s>", (char *) arch.buf));
   mgos_get_zipped_tz_data(arch.buf, groupFile, true);
+  LOG(LL_DEBUG, ("Timezone is set, free archive buffer ..."));
   mbuf_free(&arch);
   
   return true;
