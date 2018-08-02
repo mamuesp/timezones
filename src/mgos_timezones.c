@@ -82,9 +82,9 @@ char *mgos_get_zipped_tz_data(const char *archFile, const char *groupFile, bool 
 bool mgos_set_tzspec(char *tzdata) {
     bool result = true;
     const char *key = mgos_sys_config_get_timezone_olson();
-    int   len = strlen(key);
 
-    if (strstr(key, tzdata)) {
+    if (key && strlen(key) > 0 && strstr(key, tzdata)) {
+      int len = strlen(key);
       char *buff;
       char *fmt = malloc(len + 7);
     
@@ -99,7 +99,7 @@ bool mgos_set_tzspec(char *tzdata) {
       }
       free(fmt);
     } else {
-      LOG(LL_ERROR, ("Timezone <%s> not found in database!", key));
+      LOG(LL_ERROR, ("Timezone <%s> not found in database!", key ? key : "n.a."));
     }
 
     return result;
@@ -110,18 +110,24 @@ bool mgos_timezones_init(void) {
   if (!mgos_sys_config_get_timezone_enable()) {
     return true;
   }
-  
-  struct mbuf arch;
+
+  LOG(LL_DEBUG, ("Timezone init - checking for key ..."));
+  if (!mgos_sys_config_get_timezone_olson()) {
+    LOG(LL_INFO, ("Timezone init - no key found!"));
+    return true;
+  }
+
+  const char *olson = mgos_sys_config_get_timezone_olson();
+  LOG(LL_DEBUG, ("Timezone init - olson: <%s>", (char *) olson));
   const char *dataPath = mgos_sys_config_get_timezone_data_path();
   dataPath = (dataPath == NULL) ? "" : dataPath;
   LOG(LL_DEBUG, ("Timezone init - dataPath: <%s>", (char *) dataPath));
   const char *archFile = mgos_sys_config_get_timezone_arch_file();
   LOG(LL_DEBUG, ("Timezone init - archFile: <%s>", (char *) archFile));
-  const char *olson = mgos_sys_config_get_timezone_olson();
-  LOG(LL_DEBUG, ("Timezone init - olson: <%s>", (char *) olson));
   const char *groupFile = mgos_get_data_filename(olson);
   LOG(LL_DEBUG, ("Timezone init - groupFile: <%s>", (char *) groupFile));
   
+  struct mbuf arch;
   if (mgos_file_exists((char *) archFile) && strlen(dataPath) > 0) {
     LOG(LL_DEBUG, ("Moving <%s> to <%s> ...", (char *) archFile, (char *) dataPath));
     mgos_file_move((char *) archFile, "", (char *) dataPath);
