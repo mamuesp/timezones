@@ -31,6 +31,6 @@ tags:
   - c
 
 libs:
-  - origin: /Volumes/FastSSD/Develop/HeyDo/heydo-mqtt/Mongoose-OS/libs/swiss-army-knife
+  - origin: https://github.com/mamuesp/swiss-army-knife
 
 manifest_version: 2017-09-29
