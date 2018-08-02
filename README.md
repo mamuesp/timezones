@@ -19,7 +19,7 @@ You may enable/disable the library though it is loaded.
 ```YAML
   - ["timezone.data_path", "/mnt"]
 ```
-If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after flashing a new version of the firmware. After this action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. 
+If you have mounted an additional file system with e.g. the name `/mnt`, you may move the ZIP file (~5KB) to the file system you entered here. It must by mounted before. This will only be executed after flashing a new version of the firmware. After this action the moved file will be used. Be aware that after moving the archive file you should not change this setting without a new build and flash, because this will lead to an error finding the file. **Be aware: if you want to let the data untouched and let it stay where it is, please set this value to an empty string "". In this case, the ZIP file will be in the standard file system**
 ```YAML
   - ["timezone.arch_file", "tz-archive.zip"]
 ```
