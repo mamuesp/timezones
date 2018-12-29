@@ -34,7 +34,8 @@
 #include "mgos.h"
 #include "mgos_app.h"
 #include "mgos_config.h"
-#include "mgos_swiss_army_knife.h"
+#include "mgos_zip_tools.h"
+#include "mgos_common_tools.h"
 
 #define MGOS_TIMEZONES_GROUP_AFRICA "africa-tz.min.json"
 #define MGOS_TIMEZONES_GROUP_AMERICA "america-tz.min.json"

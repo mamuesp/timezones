@@ -135,11 +135,11 @@ bool mgos_timezones_init(void) {
   LOG(LL_DEBUG, ("Timezone init - groupFile: <%s>", (char *) groupFile));
   
   struct mbuf arch;
-  if (mgos_file_exists((char *) archFile) && strlen(dataPath) > 0) {
+  if (tools_file_exists((char *) archFile) && strlen(dataPath) > 0) {
     LOG(LL_DEBUG, ("Moving <%s> to <%s> ...", (char *) archFile, (char *) dataPath));
-    mgos_file_move((char *) archFile, "", (char *) dataPath);
+    tools_file_move((char *) archFile, "", (char *) dataPath);
   }
-  mgos_create_filepath(&arch, (char *) dataPath, (char *) archFile);
+  tools_create_filepath(&arch, (char *) dataPath, (char *) archFile);
   LOG(LL_DEBUG, ("Try to open ZIP file <%s>", (char *) arch.buf));
   mgos_get_zipped_tz_data(arch.buf, groupFile, true);
   LOG(LL_DEBUG, ("Timezone is set, free archive buffer ..."));

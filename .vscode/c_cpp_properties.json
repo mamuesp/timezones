@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/",
+                "/Volumes/FastSSD/Develop/HeyDo/heydo-mqtt/Mongoose-OS/heydo-libs/",
+                "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/mos-libs/mongoose/include",
+                "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/deps/modules/mongoose-os/fw/include",
+                "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/deps/modules/mongoose-os",
+                "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/deps/modules/mjs/frozen"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
