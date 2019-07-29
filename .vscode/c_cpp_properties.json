@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/",
-                "/Volumes/FastSSD/Develop/HeyDo/heydo-mqtt/Mongoose-OS/heydo-libs/",
+                "/Develop/HeyDo/heydo-mqtt/Mongoose-OS/heydo-libs/",
                 "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/mos-libs/mongoose/include",
                 "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/deps/modules/mongoose-os/fw/include",
                 "/Users/mmspaeth/.mos/apps-latest/Heydo-IoT-Module/deps/modules/mongoose-os",
